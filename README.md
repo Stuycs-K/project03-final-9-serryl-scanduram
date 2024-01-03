@@ -3,7 +3,7 @@
 
 ### GROUP NAME HERE
 
-Group Members Here
+Lily Serry and Margaux Scandura
        
 ### Project Description:
 

@@ -2,7 +2,7 @@
 
 ## Group Members:
 
-names here.
+Lily Serry and Margaux Scandura
        
 # Intentions:
 
