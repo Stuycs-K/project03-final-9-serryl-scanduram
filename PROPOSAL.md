@@ -6,12 +6,12 @@ Lily Serry and Margaux Scandura
        
 # Intentions:
 
-A statement of the problem you are solving and/or a high level description of the project.
+we are going to create chat room that will allow for two separate users on two separate computers to communicate through their terminals.
     
 # Intended usage:
 
-A description as to how the project will be used (describe the user interface).
-  
+Users will send and recieve messages in real time using their terminals.
+
 # Technical Details:
 
 A description of your technical design. This should include:
