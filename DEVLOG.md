@@ -15,3 +15,5 @@ Decided to create a chat program that works with different users on different co
 
 ### 2024-01-03 - Technical details and splitting up work
 Finished proposal doc and made a plan for splitting work.
+
+###2024-01-04 - School: Margaux worked on creating the basic forking server and making the usernames visible for the client. 
