@@ -8,17 +8,24 @@ void err(int i, char*message){
 }
 
 static void sighandler( int signo ){
-    
     if (signo == SIGINT){
-        printf("Process with PID: %d Exiting due to SIGINT\n", getpid());//change to smth involving usr?
-        char buffer[50];
-        sprintf(buffer, "Process with PID: %d Exiting due to SIGINT\n", getpid());
-       
-        int w_file = open("output.txt", O_WRONLY | O_CREAT | O_APPEND, 0600);
-        err(w_file, "error opening file");
-        
-        write(w_file, &buffer, sizeof(buffer));
-        exit(0);
+        printf("Are you sure you want to exit? (y/n)\n");
+        char* input[2];
+        fgets(input, sizeof(input), stdin);
+        if (strcmp(input, "y") == 0){
+            printf("User with PID: %d exiting chatroom due to SIGINT\n", getpid());//change to smth involving usr?
+            char buffer[50];
+            sprintf(buffer, "Process with PID: %d Exiting due to SIGINT\n", getpid());
+           
+            int w_file = open("output.txt", O_WRONLY | O_CREAT | O_APPEND, 0600);
+            err(w_file, "error opening file");
+            
+            write(w_file, &buffer, sizeof(buffer));
+            exit(0);
+        }
+        else{
+            printf("okay!\n");
+        }
     }
     else if(signo == SIGQUIT){
         printf("PPID: %d , PID: %d\n", getppid(), getpid());
