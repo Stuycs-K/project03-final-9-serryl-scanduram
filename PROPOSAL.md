@@ -29,7 +29,7 @@ Lily Serry and Margaux Scandura
      
     
 # Intended pacing:
-    From January 4th-5th (in class and at home), we will start with picking and choosing from all of our other labs and implementing the proper parts. This involves the shared memory lab, the socket lab, the csv lab, and the signal lab. Margaux will also create a simple client and server. The server should be a forking server. We can also make sure that the lcient can put in input. 
+    From January 4th-5th (in class and at home), we will start with picking and choosing from all of our other labs and implementing the proper parts. This involves the shared memory lab, the socket lab, the csv lab, and the signal lab. Margaux will also create a simple client and server. The server should be a forking server. We can also make sure that the client can put in input. 
     
     From January 8th-10th, Margaux will begin creating the file operations and figuring out how to save the chat memory. Lily will work on using signals to create a graceful exit from the chat room. 
     
