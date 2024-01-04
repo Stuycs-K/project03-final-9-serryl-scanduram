@@ -6,7 +6,7 @@
 Decided to create a chat program that works with different users on different computers because it could utilise concepts like forking and sockets, which are fresh in our minds.
 
 ### 2024-01-03 - Came up with technical details together
-Set up our files and started on the proposal. 
+Set up our files and started on the proposal. Started looking back through old labs (semaphores and signals)
 
 ## Player 2 Margaux
 
