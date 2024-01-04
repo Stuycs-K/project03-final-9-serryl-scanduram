@@ -1,17 +1,17 @@
 # Dev Log:
 
-## Player 1
+## Player 1 Lily
 
-### 2024-01-02 - Brief description
-Expanded description including how much time was spent on task.
+### 2024-01-02 - Brainstormed ideas for project
+Decided to create a chat program that works with different users on different computers because it could utilise concepts like forking and sockets, which are fresh in our minds.
 
-### 2024-01-03 - Brief description
-Expanded description including how much time was spent on task.
+### 2024-01-03 - Came up with technical details together
+Set up our files and started on the proposal. 
 
-## Player 2
+## Player 2 Margaux
 
-### 2024-01-02 - Brief description
-Expanded description including how much time was spent on task.
+### 2024-01-02 - Brainstormed ideas for project
+Decided to create a chat program that works with different users on different computers because it could utilise concepts like forking and sockets, which are fresh in our minds.
 
-### 2024-01-03 - Brief description
-Expanded description including how much time was spent on task.
+### 2024-01-03 - Technical details and splitting up work
+Finished proposal doc and made a plan for splitting work.
