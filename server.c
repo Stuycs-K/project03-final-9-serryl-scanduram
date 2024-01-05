@@ -8,19 +8,20 @@ struct User {
 };
 
 struct User user_list[MAX_USERS];
-
+int userCount = 0;
 
 void subserver_logic(int client_socket, char* username){
     char buffer[BUFFER_SIZE];
     
     while (1) {
+        
         // Receive data from client
         int Rbytes = read(client_socket, buffer, sizeof(buffer));
         if (Rbytes <= 0) {
             printf("[%s] disconnected\n", username);
             break; // Client disconnected
         }
-
+        
         char formatted_message[BUFFER_SIZE + 100];
         snprintf(formatted_message, sizeof(formatted_message), "[%s]: %s", username, buffer);
         
@@ -47,6 +48,11 @@ int main(int argc, char *argv[] ) {
         char username[100];
         snprintf(username, sizeof(username), "User%d", client_socket);
         
+        struct User new_user;
+        new_user.socket_id = client_socket;
+        snprintf(new_user.username, sizeof(new_user.username), "User%d", userCount++);
+        user_list[userCount] = new_user;
+        
         //forking
         int f = fork();
         if (f == -1) {
@@ -54,12 +60,12 @@ int main(int argc, char *argv[] ) {
         }
         else if (f==0){ //child
             close(listen_socket);
-            subserver_logic(client_socket, username);
+            subserver_logic(client_socket, new_user.username);
             exit(0);
         }
         else {
             close(client_socket);
-            printf("[%s] joined the chat\n", username);
+            printf("[%s] joined the chat\n", new_user.username);
         }
     }
 }
