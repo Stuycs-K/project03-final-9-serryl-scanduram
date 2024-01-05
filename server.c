@@ -1,28 +1,23 @@
 #include "networking.h"
 
-void subserver_logic(int client_socket){
+void subserver_logic(int client_socket, char* username){
     char buffer[BUFFER_SIZE];
     
     while (1) {
         // Receive data from client
         int Rbytes = read(client_socket, buffer, sizeof(buffer));
         if (Rbytes <= 0) {
-            printf("recv error");
+            printf("[%s] disconnected\n", username);
             break; // Client disconnected
         }
 
-        //rot13 (code found online)
-        for (int i = 0; i < Rbytes; ++i) {
-            if (isalpha(buffer[i])) {
-                char base = isupper(buffer[i]) ? 'A' : 'a';
-                buffer[i] = (buffer[i] - base + 13) % 26 + base;
-            }
-        }
-
+        char formatted_message[BUFFER_SIZE + 100];
+        snprintf(formatted_message, sizeof(formatted_message), "[%s]: %s", username, buffer);
+        
         //send data back to client
         //brief pseudo code for sending to all clients:
-            // for each client connected, write, 
-        int Sbytes = write(client_socket, buffer, Rbytes);
+            // for each client connected, write,
+        int Sbytes = write(client_socket, formatted_message, strlen(formatted_message));
         if(Sbytes==-1){
             perror("Send error");
         }
@@ -39,6 +34,9 @@ int main(int argc, char *argv[] ) {
     while(1){
         int client_socket = server_tcp_handshake(listen_socket);
         
+        char username[100];
+        snprintf(username, sizeof(username), "User%d", client_socket);
+        
         //forking
         int f = fork();
         if (f == -1) {
@@ -46,12 +44,12 @@ int main(int argc, char *argv[] ) {
         }
         else if (f==0){ //child
             close(listen_socket);
-            subserver_logic(client_socket);
+            subserver_logic(client_socket, username);
             exit(0);
         }
         else {
             close(client_socket);
-            printf("server waiting for another request\n");
+            printf("[%s] joined the chat\n", username);
         }
     }
 }
