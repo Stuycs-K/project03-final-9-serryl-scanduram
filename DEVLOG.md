@@ -16,4 +16,5 @@ Decided to create a chat program that works with different users on different co
 ### 2024-01-03 - Technical details and splitting up work
 Finished proposal doc and made a plan for splitting work.
 
-###2024-01-04 - School: Margaux worked on creating the basic forking server and making the usernames visible for the client. 
+###2024-01-04 - School: Margaux worked on creating the basic forking server and allowing the client to submit a username. 
+    Home: The username disconnect and connect works for the server, but it's showing up twice for the client, which I will try to fix tomorrow during free periods. I also went through our old labs for remembering how to save chat history and decided how we should format the retrieval of previous chats. 
