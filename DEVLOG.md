@@ -10,7 +10,7 @@ Set up our files and started on the proposal. Started looking back through old l
 
 ### 2024-01-04 - Started working on signals
 School: added sighandler file and function to double check when ctrl-c is pressed whether user wants to exit, then exit if user inputs "y".
-Home:
+Home: Created struct for user list (including username and socketID). Tried to incorporate that into the server main function which would give each client a new user(right now generic user#) and add them to the user list.
 
 ## Player 2 Margaux
 
