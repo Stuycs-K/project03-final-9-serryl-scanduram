@@ -1,6 +1,7 @@
 #include "networking.h"
 
-#define MAX_USERS 100
+#define MAX_USERS 30
+
 
 struct User {
     int socket_id;
@@ -11,9 +12,18 @@ struct User user_list[MAX_USERS];
 int userCount = 0;
 
 void subserver_logic(int client_socket, char* username){
+    
     char buffer[BUFFER_SIZE];
+    FD_SET(client_socket, &read_fds);
+
+    if (client_socket > max_fd) {
+         max_fd = client_socket;
+     }
+    
+    printf("[%s] joined the chat\n", username);
     
     while (1) {
+        fd_set read_fds = master_fds;
         
         // Receive data from client
         int Rbytes = read(client_socket, buffer, sizeof(buffer));
@@ -43,10 +53,8 @@ int main(int argc, char *argv[] ) {
     printf("server open, waiting for client\n");
     
     while(1){
+        FD_ZERO(&read_fds);
         int client_socket = server_tcp_handshake(listen_socket);
-        
-        char username[100];
-        snprintf(username, sizeof(username), "User%d", client_socket);
         
         struct User new_user;
         new_user.socket_id = client_socket;
