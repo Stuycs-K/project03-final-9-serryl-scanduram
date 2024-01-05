@@ -16,9 +16,9 @@ void subserver_logic(int client_socket, char* username){
     char buffer[BUFFER_SIZE];
     
     printf("[%s] joined the chat\n", username);
-    
+    fd_set read_fds;
+
     while (1) {
-        fd_set read_fds;
         FD_ZERO(&read_fds);
         FD_SET(STDIN_FILENO, &read_fds);
         FD_SET(client_socket, &read_fds);
@@ -35,7 +35,7 @@ void subserver_logic(int client_socket, char* username){
             fgets(buffer, sizeof(buffer), stdin); //read from standard in
             buffer[strlen(buffer)-1] = 0; //remove newline
             //send message to all clients
-            for (int i = 0; i < userCount; i++){
+            for (int i = 0; i < userCount + 1; i++){
                 if(user_list[i].socket_id != -1){
                     int Sbytes=write(user_list[i].socket_id, buffer, strlen(buffer));
                     if(Sbytes==-1){
@@ -55,7 +55,7 @@ void subserver_logic(int client_socket, char* username){
             }
 
             // Broadcast the received message to all clients
-            for (int i = 0; i < MAX_USERS; i++) {
+            for (int i = 0; i < userCount + 1; i++) {
                 if (user_list[i].socket_id != -1 && user_list[i].socket_id != client_socket) {
                     int Sbytes = write(user_list[i].socket_id, buffer, Rbytes);
                     if (Sbytes == -1) {
@@ -81,7 +81,7 @@ int main(int argc, char *argv[] ) {
         new_user.socket_id = client_socket;
         snprintf(new_user.username, sizeof(new_user.username), "User%d", userCount + 1);
         user_list[userCount++] = new_user;
-        
+       // printf("usercount: %d", userCount);
         //forking
         int f = fork();
         if (f == -1) {
