@@ -1,15 +1,15 @@
-.PHONY: compile client server
+.PHONY: compile clean
 
 compile server.out client.out: client.o networking.o server.o
 	@gcc -o client client.o networking.o
 	@gcc -o server server.o networking.o
+
+client: client.o networking.o
+	@gcc -o client client.o networking.o
+
+server: server.o networking.o
+	@gcc -o server server.o networking.o
 	
-client: client
-	@./client
-
-server: server
-	@./server
-
 client.o: client.c networking.h
 	@gcc -c client.c
 
@@ -24,5 +24,3 @@ clean:
 	@rm -f client
 	@rm -f server
 	@rm -f *~
-
-

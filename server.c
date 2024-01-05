@@ -33,34 +33,36 @@ void subserver_logic(int client_socket, char* username){
         
         if(FD_ISSET(STDIN_FILENO, &read_fds)){
             fgets(buffer, sizeof(buffer), stdin); //read from standard in
-            buffer[strlen(buffer)-1]=0; //remove newline
+            buffer[strlen(buffer)-1] = 0; //remove newline
             //send message to all clients
-            for (inti =0; i<MAX_CLIENTS; i++){
-                if(clients[i]!=-1){
-                    int Sbytes=write(clients[i], buffer, strlen(buffer));
+            for (int i = 0; i < userCount; i++){
+                if(user_list[i].socket_id != -1){
+                    int Sbytes=write(user_list[i].socket_id, buffer, strlen(buffer));
                     if(Sbytes==-1){
-                        perror("Send error");i
+                        perror("Send error");
                     }
                 }
             }
         }
         
-        // Receive data from client
-        int Rbytes = read(client_socket, buffer, sizeof(buffer));
-        if (Rbytes <= 0) {
-            printf("[%s] disconnected\n", username);
-            break; // Client disconnected
-        }
-        
-        char formatted_message[BUFFER_SIZE + 100];
-        snprintf(formatted_message, sizeof(formatted_message), "[%s]: %s", username, buffer);
-        
-        //send data back to client
-        //brief pseudo code for sending to all clients:
-            // for each client connected, write,
-        int Sbytes = write(client_socket, formatted_message, strlen(formatted_message));
-        if(Sbytes==-1){
-            perror("Send error");
+        if (FD_ISSET(client_socket, &read_fds)) {
+            // Receive data from client
+            int Rbytes = read(client_socket, buffer, sizeof(buffer));
+            if (Rbytes <= 0) {
+                // Client disconnected
+                printf("[%s] disconnected\n", username);
+                break;
+            }
+
+            // Broadcast the received message to all clients
+            for (int i = 0; i < MAX_USERS; i++) {
+                if (user_list[i].socket_id != -1 && user_list[i].socket_id != client_socket) {
+                    int Sbytes = write(user_list[i].socket_id, buffer, Rbytes);
+                    if (Sbytes == -1) {
+                        perror("Send error");
+                    }
+                }
+            }
         }
     }
 
@@ -73,13 +75,12 @@ int main(int argc, char *argv[] ) {
     printf("server open, waiting for client\n");
     
     while(1){
-        FD_ZERO(&read_fds);
         int client_socket = server_tcp_handshake(listen_socket);
         
         struct User new_user;
         new_user.socket_id = client_socket;
-        snprintf(new_user.username, sizeof(new_user.username), "User%d", userCount++);
-        user_list[userCount] = new_user;
+        snprintf(new_user.username, sizeof(new_user.username), "User%d", userCount + 1);
+        user_list[userCount++] = new_user;
         
         //forking
         int f = fork();
