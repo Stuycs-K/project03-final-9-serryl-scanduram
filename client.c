@@ -42,6 +42,7 @@ int main(int argc, char *argv[] ) {
         printf("Enter your username: ");
         fgets(name, sizeof(name), stdin);
         
+        //removing new line from end of username
         for (int i = 0; i<strlen(name); i++){
             if(name[i]== '\n'|| name[i]== '\r'){
                 name[i] = 0;
