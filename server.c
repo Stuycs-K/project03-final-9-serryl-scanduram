@@ -1,5 +1,15 @@
 #include "networking.h"
 
+#define MAX_USERS 100
+
+struct User {
+    int socket_id;
+    char username[50];
+};
+
+struct User user_list[MAX_USERS];
+
+
 void subserver_logic(int client_socket, char* username){
     char buffer[BUFFER_SIZE];
     

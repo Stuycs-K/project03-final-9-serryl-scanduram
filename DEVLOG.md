@@ -9,8 +9,8 @@ Decided to create a chat program that works with different users on different co
 Set up our files and started on the proposal. Started looking back through old labs (semaphores and signals)
 
 ### 2024-01-04 - Started working on signals
-Added sighandler file and function to double check when ctrl-c is pressed whether user wants to exit, then exit if user inputs "y".
-
+School: added sighandler file and function to double check when ctrl-c is pressed whether user wants to exit, then exit if user inputs "y".
+Home:
 
 ## Player 2 Margaux
 
