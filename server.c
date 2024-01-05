@@ -14,16 +14,36 @@ int userCount = 0;
 void subserver_logic(int client_socket, char* username){
     
     char buffer[BUFFER_SIZE];
-    FD_SET(client_socket, &read_fds);
-
-    if (client_socket > max_fd) {
-         max_fd = client_socket;
-     }
     
     printf("[%s] joined the chat\n", username);
     
     while (1) {
-        fd_set read_fds = master_fds;
+        fd_set read_fds;
+        FD_ZERO(&read_fds);
+        FD_SET(STDIN_FILENO, &read_fds);
+        FD_SET(client_socket, &read_fds);
+        
+        
+        
+        int activity = select(client_socket + 1, &read_fds, NULL, NULL, NULL);
+        if (activity < 0) {
+            perror("select error");
+            break;
+            }
+        
+        if(FD_ISSET(STDIN_FILENO, &read_fds)){
+            fgets(buffer, sizeof(buffer), stdin); //read from standard in
+            buffer[strlen(buffer)-1]=0; //remove newline
+            //send message to all clients
+            for (inti =0; i<MAX_CLIENTS; i++){
+                if(clients[i]!=-1){
+                    int Sbytes=write(clients[i], buffer, strlen(buffer));
+                    if(Sbytes==-1){
+                        perror("Send error");i
+                    }
+                }
+            }
+        }
         
         // Receive data from client
         int Rbytes = read(client_socket, buffer, sizeof(buffer));
