@@ -91,7 +91,9 @@ int main(int argc, char *argv[] ) {
      }
      }
      */
-    clientLogic(server_socket, name);
+    while(1){
+        clientLogic(server_socket, name);
+    }
     //usleep(50);
     close(server_socket);
 }

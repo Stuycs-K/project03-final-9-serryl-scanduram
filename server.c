@@ -82,10 +82,18 @@ int main(int argc, char *argv[] ) {
         int rbytes = read(client_socket, buffer, sizeof(buffer));
         if (rbytes > 0) {
             buffer[rbytes] = '\0';
-            snprintf(new_user.username, sizeof(new_user.username), "%s", buffer);
+            char* name = new_user.username;
+            for (int i = 0; i < strlen(name); i++){
+                if (name[i] == '\n' || name[i] == '\r'){
+                    name[i] = 0;
+                    break; // Stop once newline is removed
+                }
+            }
+            snprintf(name, sizeof(name), "%s", buffer);
             user_list[userCount++] = new_user;
-            printf("[%s] has joined\n", new_user.username);
-        } else {
+            printf("[%s] has joined\n", name);
+        } 
+        else {
             perror("Username receive error");
             close(client_socket);
             continue;
