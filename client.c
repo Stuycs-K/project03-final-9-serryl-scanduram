@@ -7,6 +7,38 @@ void clientLogic(int server_socket, char username[50]){
     
     //prompt user input
     while (1) {
+        fd_set read_fds;
+        FD_ZERO(&read_fds);
+        FD_SET(STDIN_FILENO, &read_fds);
+        FD_SET(server_socket, &read_fds);
+        
+        int activity = select(server_socket + 1, &read_fds, NULL, NULL, NULL);
+        if (activity < 0) {
+            perror("select error");
+            break;
+        }
+        
+        if (FD_ISSET(STDIN_FILENO, &read_fds)) {
+             fgets(buffer, sizeof(buffer), stdin);
+             buffer[strlen(buffer) - 1] = '\0';
+             int sbytes = write(server_socket, buffer, strlen(buffer));
+             if (sbytes == -1) {
+                 perror("send error");
+                 exit(1);
+             }
+         }
+        
+        if (FD_ISSET(server_socket, &read_fds)) {
+            int rbytes = read(server_socket, buffer, sizeof(buffer));
+            if (rbytes <= 0) {
+                perror("recv error");
+                break;
+            }
+            buffer[rbytes] = '\0';
+            printf("%s", buffer);
+        }
+
+        /*
         printf("[%s]: ", buffer);
         fgets(buffer, sizeof(buffer), stdin);
         
@@ -23,6 +55,7 @@ void clientLogic(int server_socket, char username[50]){
         } else {
             perror("recv error");
         }
+         */
     }
 }
     
