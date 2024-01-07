@@ -11,13 +11,14 @@ struct User {
 struct User user_list[MAX_USERS];
 int userCount = 0;
 
-void subserver_logic(int client_socket, char* username){
+void subserver_logic(int client_socket, char *username){
     
     char buffer[BUFFER_SIZE];
     printf("[%s] joined the chat\n", username);
     fd_set read_fds;
     
     while (1) {
+        fd_set read_fds;
         FD_ZERO(&read_fds);
         FD_SET(STDIN_FILENO, &read_fds);
         FD_SET(client_socket, &read_fds);
@@ -51,7 +52,7 @@ void subserver_logic(int client_socket, char* username){
             }
             
             // Broadcast the received message to all clients
-            for (int i = 0; i < userCount + 1; i++) {
+            for (int i = 0; i < userCount; i++) {
                 if (user_list[i].socket_id != -1 && user_list[i].socket_id != client_socket) {
                     int Sbytes = write(user_list[i].socket_id, buffer, Rbytes);
                     if (Sbytes == -1) {
@@ -63,7 +64,6 @@ void subserver_logic(int client_socket, char* username){
     }
     
     close(client_socket);
-    //printf("server waiting for another request\n");
 }
 
 int main(int argc, char *argv[] ) {
@@ -75,23 +75,11 @@ int main(int argc, char *argv[] ) {
         
         struct User new_user;
         new_user.socket_id = client_socket;
-        //snprintf(new_user.username, sizeof(new_user.username), "User%d", userCount + 1);
-        //user_list[userCount++] = new_user;
-        // printf("usercount: %d", userCount);
-        char buffer[BUFFER_SIZE];
-        int rbytes = read(client_socket, buffer, sizeof(buffer));
+        int rbytes = read(client_socket, new_user.username, sizeof(new_user.username));
+                    
         if (rbytes > 0) {
-            buffer[rbytes] = '\0';
-            char* name = new_user.username;
-            for (int i = 0; i < strlen(name); i++){
-                if (name[i] == '\n' || name[i] == '\r'){
-                    name[i] = 0;
-                    break; // Stop once newline is removed
-                }
-            }
-            snprintf(name, sizeof(name), "%s", buffer);
+            new_user.username[rbytes] = '\0';
             user_list[userCount++] = new_user;
-            printf("[%s] has joined\n", name);
         } 
         else {
             perror("Username receive error");
