@@ -32,8 +32,10 @@ void subserver_logic(int client_socket, char *username){
         if(FD_ISSET(STDIN_FILENO, &read_fds)){
             fgets(buffer, sizeof(buffer), stdin); //read from standard in
             buffer[strlen(buffer) - 1] = '\0';
+            printf("[%s]: %s\n", username, buffer);
+            
             for (int i = 0; i < userCount; i++){
-                if(user_list[i].socket_id != -1){
+                if(user_list[i].socket_id != -1 && user_list[i].socket_id != client_socket){
                     int Sbytes = write(user_list[i].socket_id, buffer, strlen(buffer));
                     if(Sbytes == -1){
                         perror("Send error");
@@ -48,8 +50,19 @@ void subserver_logic(int client_socket, char *username){
             if (Rbytes <= 0) {
                 // Client disconnected
                 printf("[%s] disconnected\n", username);
+                
+                for (int i = 0; i < userCount; i++) {
+                    if (user_list[i].socket_id == client_socket) {
+                        user_list[i].socket_id = -1;  // Mark as disconnected
+                        break;
+                    }
+                }
+                
                 break;
             }
+            
+            buffer[Rbytes] = '\0';
+            printf("[%s]: %s\n", username, buffer);
             
             // Broadcast the received message to all clients
             for (int i = 0; i < userCount; i++) {

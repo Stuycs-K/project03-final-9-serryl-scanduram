@@ -9,11 +9,12 @@ void clientLogic(int server_socket, char username[50]){
     while (1) {
         fd_set read_fds;
         FD_ZERO(&read_fds);
-        FD_SET(STDIN_FILENO, &read_fds);
         FD_SET(server_socket, &read_fds);
+        FD_SET(STDIN_FILENO, &read_fds);
         
-        int activity = select(server_socket + 1, &read_fds, NULL, NULL, NULL);
-        if (activity < 0) {
+        
+        int i = select(server_socket + 1, &read_fds, NULL, NULL, NULL);
+        if (i < 0) {
             perror("select error");
             break;
         }
