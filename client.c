@@ -3,7 +3,6 @@
 
 void clientLogic(int server_socket, char username[50]){
     char buffer[BUFFER_SIZE];
-    //char username [50];
     
     //prompt user input
     while (1) {
@@ -20,6 +19,7 @@ void clientLogic(int server_socket, char username[50]){
         }
         
         if (FD_ISSET(STDIN_FILENO, &read_fds)) {
+            printf("[%s]:", username);
              fgets(buffer, sizeof(buffer), stdin);
              buffer[strlen(buffer) - 1] = '\0';
              int sbytes = write(server_socket, buffer, strlen(buffer));
@@ -36,7 +36,7 @@ void clientLogic(int server_socket, char username[50]){
                 break;
             }
             buffer[rbytes] = '\0';
-            printf("%s", buffer);
+            printf("[%s] %s\n", username, buffer);
         }
     }
 }
@@ -58,6 +58,7 @@ int main(int argc, char *argv[] ) {
     for (int i = 0; i < strlen(name); i++){
         if(name[i]== '\n'|| name[i]== '\r'){
             name[i] = 0;
+            break;
         }
     }
     
@@ -68,30 +69,6 @@ int main(int argc, char *argv[] ) {
         close(server_socket);
         exit(1);
     }
-    
-    // Remove newline from the end of the username
-    for (int i = 0; i < strlen(name); i++){
-        if (name[i] == '\n' || name[i] == '\r'){
-            name[i] = 0;
-            break; // Stop once newline is removed
-        }
-    }
-    
-    //while(1){
-    //char name[100];
-    //printf("Enter your username: ");
-    /*fgets(name, sizeof(name), stdin);
-     
-     //removing new line from end of username
-     for (int i = 0; i < strlen(name); i++){
-     if(name[i]== '\n'|| name[i]== '\r'){
-     name[i] = 0;
-     }
-     }
-     */
-    //while(1){
-        clientLogic(server_socket, name);
-    //}
-    //usleep(50);
+    clientLogic(server_socket, name);
     close(server_socket);
 }

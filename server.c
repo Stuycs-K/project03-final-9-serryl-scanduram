@@ -18,13 +18,12 @@ void subserver_logic(int client_socket, char *username){
     fd_set read_fds;
     
     while (1) {
-        fd_set read_fds;
         FD_ZERO(&read_fds);
         FD_SET(STDIN_FILENO, &read_fds);
         FD_SET(client_socket, &read_fds);
         
-        int activity = select(client_socket + 1, &read_fds, NULL, NULL, NULL);
-        if (activity < 0) {
+        int i = select(client_socket + 1, &read_fds, NULL, NULL, NULL);
+        if (i < 0) {
             perror("select error");
             break;
         }
@@ -48,7 +47,7 @@ void subserver_logic(int client_socket, char *username){
             // Receive data from client
             int Rbytes = read(client_socket, buffer, sizeof(buffer));
             if (Rbytes <= 0) {
-                // Client disconnected
+                // Client disconnecteD
                 printf("[%s] disconnected\n", username);
                 
                 for (int i = 0; i < userCount; i++) {
@@ -62,7 +61,7 @@ void subserver_logic(int client_socket, char *username){
             }
             
             buffer[Rbytes] = '\0';
-            printf("[%s]: %s\n", username, buffer);
+            
             
             // Broadcast the received message to all clients
             for (int i = 0; i < userCount; i++) {
@@ -73,6 +72,7 @@ void subserver_logic(int client_socket, char *username){
                     }
                 }
             }
+            printf("[%s]: %s\n", username, buffer);
         }
     }
     
