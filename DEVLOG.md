@@ -13,6 +13,7 @@ School: added sighandler file and function to double check when ctrl-c is presse
 Home: Created struct for user list (including username and socketID). Tried to incorporate that into the server main function which would give each client a new user(right now generic user#) and add them to the user list.
 
 ###2024-01-5 - School: Lily and Margaux worked TOGETHER (on Margaux's account), to try and get the client to receive another client's messages in real time. We did not completely succeed, but we got the message to print to server and implemented some select stuff. We also fixed our makefile.
+Home: Lily worked on getting the clients to send messages to eachother through the server, but only succeeded in havign the clients send to the server concisely. 
 
 ## Player 2 Margaux
 
