@@ -9,7 +9,6 @@ struct User {
 };
 
 struct User user_list[MAX_USERS];
-int userCount = 0;
 
 void subserver_logic(int client_socket, char *username){
     
@@ -47,9 +46,10 @@ void subserver_logic(int client_socket, char *username){
         }
         
         if (FD_ISSET(client_socket, &read_fds)) {
-            printf("in client scokey");
+            printf("in client scokey\n");
             // Receive data from client
             int Rbytes = read(client_socket, buffer, sizeof(buffer));
+
             if (Rbytes <= 0) {
                 // Client disconnecteD
                 printf("[%s] disconnected\n", username);
@@ -63,22 +63,22 @@ void subserver_logic(int client_socket, char *username){
                 
                 break;
             }
-            
-            buffer[Rbytes] = '\0';
-            printf("[%s] received: %s\n", username, buffer);
-            
-            
-            // Broadcast the received message to all clients
-            for (int i = 0; i < userCount; i++) {
-                if (user_list[i].socket_id != -1 && user_list[i].socket_id != client_socket) {
-                    printf("Broadcasting to %s: %s\n", user_list[i].username, buffer);
-                    int Sbytes = write(user_list[i].socket_id, buffer, Rbytes);
-                    if (Sbytes<0) {
-                        perror("Send error");
+            else{
+                buffer[Rbytes] = '\0';
+                printf("[%s] received: %s\n", username, buffer);
+                // Broadcast the received message to all clients
+                printf("\n usercount: %d\n", userCount);
+                for (int i = 0; i < userCount; i++) {
+                    if (user_list[i].socket_id != -1){ //&& user_list[i].socket_id == client_socket) {
+                        printf("Broadcasting to %s: %s\n", user_list[i].username, buffer);
+                        int Sbytes = write(user_list[i].socket_id, buffer, Rbytes);
+                        if (Sbytes<0) {
+                            perror("Send error");
+                        }
                     }
                 }
+                printf("[%s]: %s\n", username, buffer);
             }
-            printf("[%s]: %s\n", username, buffer);
         }
         
     }

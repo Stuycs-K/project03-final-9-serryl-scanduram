@@ -15,7 +15,7 @@ void clientLogic(int server_socket, char username[50]){
         //printf("before select\n");
 
         int i = select(server_socket + 1, &read_fds, NULL, NULL, NULL);
-        printf("after select\n");
+       // printf("after select\n");
         if (i < 0) {
             perror("select error");
             break;
@@ -23,7 +23,7 @@ void clientLogic(int server_socket, char username[50]){
         
         
         if (FD_ISSET(server_socket, &read_fds)) {
-            printf("in server socket");
+            //printf("in server socket");
             int rbytes = read(server_socket, buffer, sizeof(buffer));
             if (rbytes <= 0) {
                 perror("recv error");
@@ -34,7 +34,7 @@ void clientLogic(int server_socket, char username[50]){
         }
         
         if (FD_ISSET(STDIN_FILENO, &read_fds)) {
-            printf("in client stdin fileno");
+            //printf("in client stdin fileno");
             printf("[%s]:", username);
              fgets(buffer, sizeof(buffer), stdin);
              buffer[strlen(buffer) - 1] = '\0';
