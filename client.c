@@ -6,6 +6,7 @@ void clientLogic(int server_socket, char username[50]){
     
     //prompt user input
     while (1) {
+        
         fd_set read_fds;
         FD_ZERO(&read_fds);
         FD_SET(server_socket, &read_fds);
@@ -18,7 +19,20 @@ void clientLogic(int server_socket, char username[50]){
             break;
         }
         
+        
+        if (FD_ISSET(server_socket, &read_fds)) {
+            printf("in server socket");
+            int rbytes = read(server_socket, buffer, sizeof(buffer));
+            if (rbytes <= 0) {
+                perror("recv error");
+                break;
+            }
+            buffer[rbytes] = '\0';
+            printf("[%s] %s\n", username, buffer);
+        }
+        
         if (FD_ISSET(STDIN_FILENO, &read_fds)) {
+            printf("in client stdin fileno");
             printf("[%s]:", username);
              fgets(buffer, sizeof(buffer), stdin);
              buffer[strlen(buffer) - 1] = '\0';
@@ -28,18 +42,9 @@ void clientLogic(int server_socket, char username[50]){
                  exit(1);
              }
          }
-        
-        if (FD_ISSET(server_socket, &read_fds)) {
-            int rbytes = read(server_socket, buffer, sizeof(buffer));
-            if (rbytes <= 0) {
-                perror("recv error");
-                break;
-            }
-            buffer[rbytes] = '\0';
-            printf("[%s] %s\n", username, buffer);
-        }
     }
 }
+
 
 
 int main(int argc, char *argv[] ) {
@@ -51,24 +56,32 @@ int main(int argc, char *argv[] ) {
     int server_socket = client_tcp_handshake(IP);
     printf("client connected.\n");
     
-    
-    char name[100];
-    printf("Enter your username: ");
-    fgets(name, sizeof(name), stdin);
-    for (int i = 0; i < strlen(name); i++){
-        if(name[i]== '\n'|| name[i]== '\r'){
-            name[i] = 0;
-            break;
+    printf("Please enter 'c' if you would like to enter a chat and 'h' if you would like to see previous chat histories.\n");
+    char ans[2];
+    fgets(ans, sizeof(ans), stdin);
+    if(strcmp(ans, "h")==0){
+        printf("in progress\n");
+    }
+    else{
+        
+        char name[100];
+        printf("Enter your username: ");
+        fgets(name, sizeof(name), stdin);
+        for (int i = 0; i < strlen(name); i++){
+            if(name[i]== '\n'|| name[i]== '\r'){
+                name[i] = 0;
+                break;
+            }
         }
-    }
-    
-    int sbytes = write(server_socket, name, strlen(name));
-    
-    if (sbytes < 0) {
-        perror("send error");
+        
+        int sbytes = write(server_socket, name, strlen(name));
+        
+        if (sbytes < 0) {
+            perror("send error");
+            close(server_socket);
+            exit(1);
+        }
+        clientLogic(server_socket, name);
         close(server_socket);
-        exit(1);
     }
-    clientLogic(server_socket, name);
-    close(server_socket);
 }
