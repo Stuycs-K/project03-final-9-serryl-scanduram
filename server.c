@@ -89,14 +89,19 @@ void subserver_logic(int client_socket, char *username){
 int main(int argc, char *argv[] ) {
     int listen_socket = server_setup();
     printf("server open, waiting for client\n");
-    
+    printf("1 works\n");
+
     while(1){
         int client_socket = server_tcp_handshake(listen_socket);
-        
+        printf("2 works\n");
+
         struct User new_user;
         new_user.socket_id = client_socket;
+        printf("3 works\n");
         int rbytes = read(client_socket, new_user.username, sizeof(new_user.username));
-                    
+        printf("4 works\n");
+        printf("new_user.username");
+        
         if (rbytes > 0) {
             new_user.username[rbytes] = '\0';
             user_list[userCount++] = new_user;

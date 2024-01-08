@@ -61,26 +61,33 @@ int main(int argc, char *argv[] ) {
     printf("Please enter 'c' if you would like to enter a chat and 'h' if you would like to see previous chat histories.\n");
     char ans[2];
     fgets(ans, sizeof(ans), stdin);
-    if(strcmp(ans, "h")==0){
+    if(strcmp(ans, "h") == 0){
         printf("in progress\n");
     }
     else{
+        printf("1 works\n");
+        int c;
+        while ((c = getchar()) != '\n' && c != EOF);
         
         char name[100];
         printf("Enter your username: ");
         fgets(name, sizeof(name), stdin);
+        printf("2 works\n");
         for (int i = 0; i < strlen(name); i++){
             if(name[i]== '\n'|| name[i]== '\r'){
                 name[i] = 0;
                 break;
             }
         }
+        printf("3 works\n");
+
         //printing username
         //printf("Enter a message: ");
         
         
         int sbytes = write(server_socket, name, strlen(name));
-        
+        printf("4 works\n");
+
         if (sbytes < 0) {
             perror("send error");
             
