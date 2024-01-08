@@ -21,7 +21,6 @@ void clientLogic(int server_socket, char username[50]){
             break;
         }
         
-        
         if (FD_ISSET(server_socket, &read_fds)) {
             //printf("in server socket");
             int rbytes = read(server_socket, buffer, sizeof(buffer));
@@ -30,7 +29,7 @@ void clientLogic(int server_socket, char username[50]){
                 break;
             }
             buffer[rbytes] = '\0';
-            printf("[%s] %s\n", username, buffer);
+            printf("%s\n", buffer);
         }
         
         if (FD_ISSET(STDIN_FILENO, &read_fds)) {
@@ -77,11 +76,6 @@ int main(int argc, char *argv[] ) {
                 break;
             }
         }
-        
-        //printing username
-        //printf("Enter a message: ");
-        
-        
         int sbytes = write(server_socket, name, strlen(name));
         if (sbytes < 0) {
             perror("send error");
@@ -89,12 +83,12 @@ int main(int argc, char *argv[] ) {
             //int sbytes = write(server_socket, name, strlen(name));
             
             //if (sbytes < 0) {
-                perror("send error");
-                close(server_socket);
-                exit(1);
-            }
-            clientLogic(server_socket, name);
+            perror("send error");
             close(server_socket);
+            exit(1);
         }
+        clientLogic(server_socket, name);
+        close(server_socket);
     }
+}
 

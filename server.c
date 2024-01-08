@@ -1,5 +1,6 @@
 #include "networking.h"
-
+#include <semaphore.h>
+#include <fcntl.h>
 #define MAX_USERS 30
 
 
@@ -9,7 +10,18 @@ struct User {
 };
 
 struct User user_list[MAX_USERS];
+//sem_t *userCount_sem;
+int userCount = 0;
 
+/*
+void semUserCount() {
+    userCount_sem = sem_open("/userCount_sem", O_CREAT | O_EXCL, 0644, 1);
+    if (userCount_sem == SEM_FAILED) {
+        perror("Semaphore initialization failed");
+        exit(EXIT_FAILURE);
+    }
+}
+*/
 void subserver_logic(int client_socket, char *username){
     
     char buffer[BUFFER_SIZE];
@@ -67,10 +79,16 @@ void subserver_logic(int client_socket, char *username){
                 buffer[Rbytes] = '\0';
                 printf("[%s] received: %s\n", username, buffer);
                 // Broadcast the received message to all clients
-                printf("\n usercount: %d\n", userCount);
+                //printf("\nusercount: %d\n", userCount);
+                printf("printing userList: \n");
+                for (int i = 0; i < userCount; i++){
+                    printf("user %d: %s\n", i, user_list[i].username);
+                }
+                
                 for (int i = 0; i < userCount; i++) {
                     if (user_list[i].socket_id != -1){ //&& user_list[i].socket_id == client_socket) {
-                        printf("Broadcasting to %s: %s\n", user_list[i].username, buffer);
+                        printf("Broadcasting to %s: %s\n", user_list[i].username, buffer);//does do that
+                        printf("current user: %s\n", user_list[i].username);
                         int Sbytes = write(user_list[i].socket_id, buffer, Rbytes);
                         if (Sbytes<0) {
                             perror("Send error");
@@ -87,6 +105,7 @@ void subserver_logic(int client_socket, char *username){
 }
 
 int main(int argc, char *argv[] ) {
+    //semUserCount();
     int listen_socket = server_setup();
     printf("server open, waiting for client\n");
 
@@ -99,8 +118,10 @@ int main(int argc, char *argv[] ) {
         
         if (rbytes > 0) {
             new_user.username[rbytes] = '\0';
+            //sem_wait(userCount_sem); // Acquire semaphore before modifying userCount
             user_list[userCount++] = new_user;
-        } 
+            //sem_post(userCount_sem); // Release semaphore after modifying userCount
+        }
         else {
             perror("Username receive error");
             close(client_socket);
@@ -123,6 +144,8 @@ int main(int argc, char *argv[] ) {
         }
     }
     close(listen_socket);
+    //sem_close(userCount_sem);
+    //em_unlink("/userCount_sem"); // Cleanup semaphore
 }
 
 

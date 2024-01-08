@@ -2,7 +2,6 @@
 
 //149.89.161.120
 //looopback address: 127.0.0.1
-int userCount = 0;
 
 void err(int i, char*message){
   if(i < 0){
