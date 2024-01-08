@@ -147,5 +147,3 @@ int main(int argc, char *argv[] ) {
     //sem_close(userCount_sem);
     //em_unlink("/userCount_sem"); // Cleanup semaphore
 }
-
-

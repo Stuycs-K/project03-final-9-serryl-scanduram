@@ -15,6 +15,9 @@ Home: Created struct for user list (including username and socketID). Tried to i
 ###2024-01-5 - School: Lily and Margaux worked TOGETHER (on Margaux's account), to try and get the client to receive another client's messages in real time. We did not completely succeed, but we got the message to print to server and implemented some select stuff. We also fixed our makefile.
 Home: Lily worked on getting the clients to send messages to eachother through the server, but only succeeded in havign the clients send to the server concisely. 
 
+###2024-01-8 - School: Margaux and Lily worked together on Lily's account during class to debug. We spent the entire period debugging and trying to figure out where the code stops working. Unfortunately, we were unsuccessful with our print statements. 
+Home: Lily worked after Margaux on trying to get the clients to communicate and figured out that the issue was that the user_list didn't update for the first client when a new one connected. She is going to maybe try using semaphores to fix that and share memory?
+
 ## Player 2 Margaux
 
 ### 2024-01-02 - Brainstormed ideas for project
