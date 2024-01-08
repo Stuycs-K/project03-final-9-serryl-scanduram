@@ -11,8 +11,10 @@ void clientLogic(int server_socket, char username[50]){
         FD_SET(server_socket, &read_fds);
         FD_SET(STDIN_FILENO, &read_fds);
         
-        
+        //printf("before select\n");
+
         int i = select(server_socket + 1, &read_fds, NULL, NULL, NULL);
+        printf("after select\n");
         if (i < 0) {
             perror("select error");
             break;
@@ -30,7 +32,9 @@ void clientLogic(int server_socket, char username[50]){
          }
         
         if (FD_ISSET(server_socket, &read_fds)) {
+            printf("before reading\n");
             int rbytes = read(server_socket, buffer, sizeof(buffer));
+            printf("after read from server into buffer\n");
             if (rbytes <= 0) {
                 perror("recv error");
                 break;
@@ -60,7 +64,9 @@ int main(int argc, char *argv[] ) {
             name[i] = 0;
             break;
         }
-    }
+    }//printing username
+    //printf("Enter a message: ");
+
     
     int sbytes = write(server_socket, name, strlen(name));
     
