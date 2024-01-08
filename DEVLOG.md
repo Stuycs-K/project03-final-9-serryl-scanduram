@@ -28,3 +28,7 @@ Finished proposal doc and made a plan for splitting work.
 
 ###2024-01-5 - School: Lily and Margaux worked TOGETHER (on Margaux's account), to try and get the client to receive another client's messages in real time. We did not completely succeed, but we got the message to print to server and implemented some select stuff. We also fixed our makefile.
     Home: Margaux worked a lot on ther server/client connection, trying to get the server to broadcast the messages back to the clients. So far, the clients can send messages that will both appear on the server, but won't appear on each other's terminals. The clients messages will appear on their own terminals with their usernames though!
+
+###2024-01-08
+    School: Margaux and Lily worked together on Lily's account during class to debug. We spent the entire period debugging (I swear, people saw us) and trying to figure out where the code stops working. Unfortunately, we were unsuccessful with our print statements. 
+    Home: Margaux continued the debugging by including print statements and determined that the client code never enters the server_Socket if statement, only the STDIN_FILENO. The server code only goes into the Client_Socket, not the stdin fileno. Margaux also prepped the homescreen, so that it prompts the user to see if they want to enter a chat or see previous history. 
