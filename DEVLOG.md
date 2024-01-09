@@ -19,6 +19,7 @@ Home: Lily worked on getting the clients to send messages to eachother through t
 Home: Lily worked after Margaux on trying to get the clients to communicate and figured out that the issue was that the user_list didn't update for the first client when a new one connected. She is going to maybe try using semaphores to fix that and share memory?
 ###2024-01-09
     School: Margaux and Lily worked together. We were trying to figure out the really hard part, so we asked mr.K, turns out we were not supposed to use a forking server, oops! We spent the rest of the period switching it to a persistent server, and now the code works!! Our clients connect and can see each others messages. 
+    Home: Lily fixed a bug that Margaux was working on earlier that had messed up the username input. Also worked on the formatting of the chat so that it is clear who is sending what message.
 
 
 ## Player 2 Margaux
