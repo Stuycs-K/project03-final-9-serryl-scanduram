@@ -37,6 +37,8 @@ void subserver_logic(int client_socket, char *username, char save){
             break;
         }
         
+        //int Sbytes = write(user_list[i].socket_id, username, strlen(username));
+
         if(FD_ISSET(STDIN_FILENO, &read_fds)){
             printf("in stdin sevrer");
             fgets(buffer, sizeof(buffer), stdin); //read from standard in
@@ -45,6 +47,7 @@ void subserver_logic(int client_socket, char *username, char save){
             
             for (int i = 0; i < userCount; i++){
                 if(user_list[i].socket_id != -1 && user_list[i].socket_id != client_socket){
+
                     int Sbytes = write(user_list[i].socket_id, buffer, strlen(buffer));
                     if(Sbytes <0){
                         perror("Send error");
