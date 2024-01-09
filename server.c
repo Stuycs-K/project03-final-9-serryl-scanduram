@@ -136,10 +136,19 @@ int main(int argc, char *argv[] ) {
         if (FD_ISSET(listen_socket, &read_fds)) {
             int client_socket = server_tcp_handshake(listen_socket);
             
+            char save[2];
+            int rbytes = read(client_socket, save, sizeof(save));
+            if (strcmp(save, "y") == 0){
+                printf("chat will be saved\n");
+                //stub for next
+            }
+            else{
+                printf("chat will not be saved\n");
+            }
+            
             struct User new_user;
             new_user.socket_id = client_socket;
-            int rbytes = read(client_socket, new_user.username, sizeof(new_user.username));
-            
+            rbytes = read(client_socket, new_user.username, sizeof(new_user.username));
             if (rbytes > 0) {
                 new_user.username[rbytes] = '\0';
                 user_list[userCount++] = new_user;
