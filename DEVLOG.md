@@ -17,6 +17,9 @@ Home: Lily worked on getting the clients to send messages to eachother through t
 
 ###2024-01-8 - School: Margaux and Lily worked together on Lily's account during class to debug. We spent the entire period debugging and trying to figure out where the code stops working. Unfortunately, we were unsuccessful with our print statements. 
 Home: Lily worked after Margaux on trying to get the clients to communicate and figured out that the issue was that the user_list didn't update for the first client when a new one connected. She is going to maybe try using semaphores to fix that and share memory?
+###2024-01-09
+    School: Margaux and Lily worked together. We were trying to figure out the really hard part, so we asked mr.K, turns out we were not supposed to use a forking server, oops! We spent the rest of the period switching it to a persistent server, and now the code works!! Our clients connect and can see each others messages. 
+
 
 ## Player 2 Margaux
 
@@ -35,3 +38,6 @@ Finished proposal doc and made a plan for splitting work.
 ###2024-01-08
     School: Margaux and Lily worked together on Lily's account during class to debug. We spent the entire period debugging (I swear, people saw us) and trying to figure out where the code stops working. Unfortunately, we were unsuccessful with our print statements. 
     Home: Margaux continued the debugging by including print statements and determined that the client code never enters the server_Socket if statement, only the STDIN_FILENO. The server code only goes into the Client_Socket, not the stdin fileno. Margaux also prepped the homescreen, so that it prompts the user to see if they want to enter a chat or see previous history. 
+    
+###2024-01-09
+    School: Margaux and Lily worked together. We were trying to figure out the really hard part, so we asked mr.K, turns out we were not supposed to use a forking server, oops! We spent the rest of the period switching it to a persistent server, and now the code works!! Our clients connect and can see each others messages. 
