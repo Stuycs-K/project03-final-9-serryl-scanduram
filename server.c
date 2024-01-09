@@ -10,18 +10,9 @@ struct User {
 };
 
 struct User user_list[MAX_USERS];
-//sem_t *userCount_sem;
 int userCount = 0;
 
-/*
-void semUserCount() {
-    userCount_sem = sem_open("/userCount_sem", O_CREAT | O_EXCL, 0644, 1);
-    if (userCount_sem == SEM_FAILED) {
-        perror("Semaphore initialization failed");
-        exit(EXIT_FAILURE);
-    }
-}
-*/
+
 void subserver_logic(int client_socket, char *username){
     
     char buffer[BUFFER_SIZE];
