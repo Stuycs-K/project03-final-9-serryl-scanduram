@@ -58,6 +58,7 @@ int main(int argc, char *argv[] ) {
     char ans[2];
     fgets(ans, sizeof(ans), stdin);
     if(strcmp(ans, "h") == 0){
+        
         printf("in progress\n");
     }
     else{

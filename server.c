@@ -1,4 +1,5 @@
 #include "networking.h"
+#include "history.h"
 #include <semaphore.h>
 #include <fcntl.h>
 #define MAX_USERS 30
@@ -52,6 +53,7 @@ void subserver_logic(int client_socket, char *username){
             printf("[%s] is typing from client socket\n", username);
             // Receive data from client
             int Rbytes = read(client_socket, buffer, sizeof(buffer));
+            reader();
 
             if (Rbytes <= 0) {
                 // Client disconnecteD
@@ -171,34 +173,4 @@ int main(int argc, char *argv[] ) {
         }
     }
     close(listen_socket);
-        
-        /*
-    
-        int client_socket = server_tcp_handshake(listen_socket);
-
-        struct User new_user;
-        new_user.socket_id = client_socket;
-        int rbytes = read(client_socket, new_user.username, sizeof(new_user.username));
-        
-        if (rbytes > 0) {
-            new_user.username[rbytes] = '\0';
-            //sem_wait(userCount_sem); // Acquire semaphore before modifying userCount
-            user_list[userCount++] = new_user;
-            //sem_post(userCount_sem); // Release semaphore after modifying userCount
-        }
-        else {
-            perror("Username receive error");
-            close(client_socket);
-            continue;
-        }
-        
-        close(listen_socket);
-        subserver_logic(client_socket, new_user.username);
-        exit(0);
-        close(listen_socket);
-    }
-    
-    //sem_close(userCount_sem);
-    //em_unlink("/userCount_sem"); // Cleanup semaphore
-         */
 }
