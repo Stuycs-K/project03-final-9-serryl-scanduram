@@ -61,9 +61,27 @@ int main(int argc, char *argv[] ) {
         
         printf("in progress\n");
     }
+    
     else{
         int c;
         while ((c = getchar()) != '\n' && c != EOF);
+        char save[2];
+        printf("Do you want to save chat history? (y/n):\n");
+        fgets(save, sizeof(save), stdin);
+        save[strcspn(save, "\n")] = '\0';  // Remove newline character
+        if (strcmp(save, "y") == 0) {
+            printf("Ok. chat will be saved!\n");
+            creator();
+        }
+        else{
+            printf("Ok. chat will not be saved!\n");
+        }
+        write(server_socket, save, strlen(save));
+    
+    
+    
+        
+        while ((c = getchar()) != '\n' && c != EOF);        
         
         char name[100];
         printf("Enter your username: ");

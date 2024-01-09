@@ -14,13 +14,15 @@ struct User user_list[MAX_USERS];
 int userCount = 0;
 
 
-void subserver_logic(int client_socket, char *username){
+void subserver_logic(int client_socket, char *username, char *saver){
     
     char buffer[BUFFER_SIZE];
     printf("[%s] joined the chat\n", username);
     
     
     while (1) {
+        write(client_socket, saver, strlen(saver));
+        
         fd_set read_fds;
         FD_ZERO(&read_fds);
         FD_SET(STDIN_FILENO, &read_fds);
@@ -53,7 +55,9 @@ void subserver_logic(int client_socket, char *username){
             printf("[%s] is typing from client socket\n", username);
             // Receive data from client
             int Rbytes = read(client_socket, buffer, sizeof(buffer));
-            reader();
+            if (strcmp(saver, "y") == 0){
+                reader(username, saver);
+            }
 
             if (Rbytes <= 0) {
                 // Client disconnecteD
@@ -106,6 +110,7 @@ int main(int argc, char *argv[] ) {
     printf("server open, waiting for client\n");
 
     while(1){
+        
         fd_set read_fds;
         FD_ZERO(&read_fds);
         FD_SET(listen_socket, &read_fds);
@@ -146,6 +151,7 @@ int main(int argc, char *argv[] ) {
             if (FD_ISSET(user_list[i].socket_id, &read_fds)) {
                 char buffer[BUFFER_SIZE];
                 int rbytes = read(user_list[i].socket_id, buffer, sizeof(buffer));
+                
                 if (rbytes <= 0) {
                     // Client disconnected
                     printf("[%s] disconnected\n", user_list[i].username);

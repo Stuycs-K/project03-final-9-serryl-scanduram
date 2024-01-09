@@ -2,7 +2,7 @@
 #include <fcntl.h>
 
 void reader( char *username, char *message){
-    FILE *log_file = fopen(LOG_FILE, "a");
+    FILE *log_file = fopen("./log.txt", "a");
     if (log_file == NULL) {
            perror("Error opening log file");
            return;
