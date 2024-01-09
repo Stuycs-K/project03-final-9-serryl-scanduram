@@ -1,4 +1,5 @@
 #include "networking.h"
+#include "history.h"
 
 
 void clientLogic(int server_socket, char username[50]){
@@ -58,18 +59,16 @@ int main(int argc, char *argv[] ) {
     char ans[2];
     fgets(ans, sizeof(ans), stdin);
     if(strcmp(ans, "h") == 0){
-        
         printf("in progress\n");
     }
-    
-    else{
-        int c;
-        while ((c = getchar()) != '\n' && c != EOF);
+    else {
+        int s;
+        while ((s = getchar()) != '\n' && s != EOF);
         char save[2];
         printf("Do you want to save chat history? (y/n):\n");
         fgets(save, sizeof(save), stdin);
-        save[strcspn(save, "\n")] = '\0';  // Remove newline character
-        if (strcmp(save, "y") == 0) {
+        save[strcspn(save, "\n")] = '\0';
+        if (save[0]=='y') {
             printf("Ok. chat will be saved!\n");
             creator();
         }
@@ -77,10 +76,7 @@ int main(int argc, char *argv[] ) {
             printf("Ok. chat will not be saved!\n");
         }
         write(server_socket, save, strlen(save));
-    
-    
-    
-        
+        int c;
         while ((c = getchar()) != '\n' && c != EOF);        
         
         char name[100];

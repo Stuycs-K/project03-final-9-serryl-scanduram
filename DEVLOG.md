@@ -41,3 +41,4 @@ Finished proposal doc and made a plan for splitting work.
     
 ###2024-01-09
     School: Margaux and Lily worked together. We were trying to figure out the really hard part, so we asked mr.K, turns out we were not supposed to use a forking server, oops! We spent the rest of the period switching it to a persistent server, and now the code works!! Our clients connect and can see each others messages. 
+    Home: Margaux worked on beginning the saving of chats. She created the new history files and reconfigured makefile to include them and work properly. She also gave the client the option to sva ethe history and made a preliminary writing method for writing to a file. There are a few bugs, but ntohing that can't be fixed tomorrow.

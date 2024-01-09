@@ -14,14 +14,17 @@ struct User user_list[MAX_USERS];
 int userCount = 0;
 
 
-void subserver_logic(int client_socket, char *username, char *saver){
+void subserver_logic(int client_socket, char *username, char save){
     
     char buffer[BUFFER_SIZE];
     printf("[%s] joined the chat\n", username);
     
     
     while (1) {
-        write(client_socket, saver, strlen(saver));
+        int c = getchar();
+        if (c != EOF) {
+            save = (char)c;
+        }
         
         fd_set read_fds;
         FD_ZERO(&read_fds);
@@ -55,8 +58,8 @@ void subserver_logic(int client_socket, char *username, char *saver){
             printf("[%s] is typing from client socket\n", username);
             // Receive data from client
             int Rbytes = read(client_socket, buffer, sizeof(buffer));
-            if (strcmp(saver, "y") == 0){
-                reader(username, saver);
+            if (save =='y'){
+                reader(username, buffer);
             }
 
             if (Rbytes <= 0) {
