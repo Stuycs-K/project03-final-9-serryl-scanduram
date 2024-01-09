@@ -104,6 +104,76 @@ int main(int argc, char *argv[] ) {
     printf("server open, waiting for client\n");
 
     while(1){
+        fd_set read_fds;
+        FD_ZERO(&read_fds);
+        FD_SET(listen_socket, &read_fds);
+        
+        int max_fd=listen_socket;
+        
+        for (int i =0; i<userCount; i++){
+            FD_SET(user_list[i].socket_id, &read_fds);
+            if(user_list[i].socket_id > max_fd) {
+                max_fd = user_list[i].socket_id;
+            }
+        }
+        
+        int i = select(max_fd + 1, &read_fds, NULL, NULL, NULL);
+        if (i < 0) {
+            perror("select error");
+            break;
+        }
+        
+        if (FD_ISSET(listen_socket, &read_fds)) {
+            int client_socket = server_tcp_handshake(listen_socket);
+            
+            struct User new_user;
+            new_user.socket_id = client_socket;
+            int rbytes = read(client_socket, new_user.username, sizeof(new_user.username));
+            
+            if (rbytes > 0) {
+                new_user.username[rbytes] = '\0';
+                user_list[userCount++] = new_user;
+                printf("[%s] joined the chat\n", new_user.username);
+            } else {
+                perror("Username receive error");
+                close(client_socket);
+            }
+        }
+        
+        for(int i =0; i<userCount; i++){
+            if (FD_ISSET(user_list[i].socket_id, &read_fds)) {
+                char buffer[BUFFER_SIZE];
+                int rbytes = read(user_list[i].socket_id, buffer, sizeof(buffer));
+                if (rbytes <= 0) {
+                    // Client disconnected
+                    printf("[%s] disconnected\n", user_list[i].username);
+                    
+                    // Remove user from the list
+                    for (int j = i; j < userCount - 1; j++) {
+                        user_list[j] = user_list[j + 1];
+                    }
+                    userCount--;
+                    i--;
+                }
+                else{
+                    buffer[rbytes] = '\0';
+                    printf("[%s]: %s\n", user_list[i].username, buffer);
+                    for (int j = 0; j < userCount; j++) {
+                        if (j != i) {
+                            int sbytes = write(user_list[j].socket_id, buffer, rbytes);
+                            if (sbytes < 0) {
+                                perror("Send error");
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+    close(listen_socket);
+        
+        /*
+    
         int client_socket = server_tcp_handshake(listen_socket);
 
         struct User new_user;
@@ -122,22 +192,13 @@ int main(int argc, char *argv[] ) {
             continue;
         }
         
-        //forking
-        int f = fork();
-        if (f == -1) {
-            printf("fork failed\n");
-        }
-        else if (f==0){ //child
-            close(listen_socket);
-            subserver_logic(client_socket, new_user.username);
-            exit(0);
-        }
-        else {
-            close(client_socket);
-            //printf("[%s] joined the chat\n", new_user.username);
-        }
+        close(listen_socket);
+        subserver_logic(client_socket, new_user.username);
+        exit(0);
+        close(listen_socket);
     }
-    close(listen_socket);
+    
     //sem_close(userCount_sem);
     //em_unlink("/userCount_sem"); // Cleanup semaphore
+         */
 }
