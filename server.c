@@ -58,7 +58,7 @@ void subserver_logic(int client_socket, char *username){
         }
         
         if (FD_ISSET(client_socket, &read_fds)) {
-            printf("in client scokey\n");
+            printf("[%s] is typing from client socket\n", username);
             // Receive data from client
             int Rbytes = read(client_socket, buffer, sizeof(buffer));
 
@@ -86,12 +86,15 @@ void subserver_logic(int client_socket, char *username){
                 }
                 
                 for (int i = 0; i < userCount; i++) {
-                    if (user_list[i].socket_id != -1){ //&& user_list[i].socket_id == client_socket) {
+                    if (user_list[i].socket_id != -1){
                         printf("Broadcasting to %s: %s\n", user_list[i].username, buffer);//does do that
-                        printf("current user: %s\n", user_list[i].username);
-                        int Sbytes = write(user_list[i].socket_id, buffer, Rbytes);
-                        if (Sbytes<0) {
-                            perror("Send error");
+                        
+                        if(strcmp(user_list[i].username, username)!=0){
+                            printf("current user: %s\n", user_list[i].username);
+                            int Sbytes = write(user_list[i].socket_id, buffer, Rbytes);
+                            if (Sbytes<0) {
+                                perror("Send error");
+                            }
                         }
                     }
                 }
