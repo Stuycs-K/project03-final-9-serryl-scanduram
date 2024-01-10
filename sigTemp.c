@@ -13,14 +13,7 @@ static void sighandler( int signo ){
         char* input[2];
         fgets(input, sizeof(input), stdin);
         if (strcmp(input, "y") == 0){
-            printf("User with PID: %d exiting chatroom due to SIGINT\n", getpid());//change to smth involving usr?
-            char buffer[50];
-            sprintf(buffer, "Process with PID: %d Exiting due to SIGINT\n", getpid());
-           
-            int w_file = open("output.txt", O_WRONLY | O_CREAT | O_APPEND, 0600);
-            err(w_file, "error opening file");
-            
-            write(w_file, &buffer, sizeof(buffer));
+            printf("you are exiting\n");//change to smth involving usr?
             exit(0);
         }
         else{
@@ -28,7 +21,7 @@ static void sighandler( int signo ){
         }
     }
     else if(signo == SIGQUIT){
-        printf("PPID: %d , PID: %d\n", getppid(), getpid());
+        printf("not sure what this does");
     }
 }
 

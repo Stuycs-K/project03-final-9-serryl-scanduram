@@ -1,5 +1,28 @@
 #include "networking.h"
 #include "history.h"
+#include <signal.h>
+#include <string.h>
+
+static int sigint_received = 0; // Global variable to track SIGINT reception
+
+static void sighandler( int signo ){
+    if (signo == SIGINT){
+        printf("Are you sure you want to exit? (y/n)\n");
+        char input[2];
+        fgets(input, sizeof(input), stdin);
+        if (strcmp(input, "y") == 0){
+            printf("\nyou are exiting\n");//change to smth involving usr?
+            exit(0);
+        }
+        else{
+            printf("okay!\n");
+            sigint_received = 1; // Set the flag to continue normal execution
+        }
+    }
+    else if(signo == SIGQUIT){
+        printf("not sure what this does");
+    }
+}
 
 
 void clientLogic(int server_socket, char username[50]){
@@ -7,55 +30,58 @@ void clientLogic(int server_socket, char username[50]){
     char user[50];
     //prompt user input
     while (1) {
-        
-        fd_set read_fds;
-        FD_ZERO(&read_fds);
-        FD_SET(server_socket, &read_fds);
-        FD_SET(STDIN_FILENO, &read_fds);
-        
-
-        int i = select(server_socket + 1, &read_fds, NULL, NULL, NULL);
-        
-        if (i < 0) {
-            perror("select error");
-            break;
-        }
-        
-        if (FD_ISSET(server_socket, &read_fds)) {
-           /*
-            int rbytes = read(server_socket, user, sizeof(user));
-            if (rbytes <= 0) {
-                perror("recv error");
+        if (sigint_received == 1){
+            
+            fd_set read_fds;
+            FD_ZERO(&read_fds);
+            FD_SET(server_socket, &read_fds);
+            FD_SET(STDIN_FILENO, &read_fds);
+            
+            
+            int i = select(server_socket + 1, &read_fds, NULL, NULL, NULL);
+            
+            if (i < 0) {
+                perror("select error");
                 break;
             }
-            printf("[%s]: ", user);
-            */
-            int rbytes = read(server_socket, buffer, sizeof(buffer));
-            if (rbytes <= 0) {
-                perror("recv error");
-                break;
+            
+            if (FD_ISSET(server_socket, &read_fds)) {
+                /*
+                 int rbytes = read(server_socket, user, sizeof(user));
+                 if (rbytes <= 0) {
+                 perror("recv error");
+                 break;
+                 }
+                 printf("[%s]: ", user);
+                 */
+                int rbytes = read(server_socket, buffer, sizeof(buffer));
+                if (rbytes <= 0) {
+                    perror("recv error");
+                    break;
+                }
+                buffer[rbytes] = '\0';
+                printf("%s\n", buffer);
             }
-            buffer[rbytes] = '\0';
-            printf("%s\n", buffer);
+            
+            if (FD_ISSET(STDIN_FILENO, &read_fds)) {
+                printf("[%s]: ", username);
+                fgets(buffer, sizeof(buffer), stdin);
+                buffer[strlen(buffer) - 1] = '\0';
+                int sbytes = write(server_socket, buffer, strlen(buffer));
+                if (sbytes == -1) {
+                    perror("send error");
+                    exit(1);
+                }
+            }
         }
-        
-        if (FD_ISSET(STDIN_FILENO, &read_fds)) {
-             printf("[%s]: ", username);
-             fgets(buffer, sizeof(buffer), stdin);
-             buffer[strlen(buffer) - 1] = '\0';
-             int sbytes = write(server_socket, buffer, strlen(buffer));
-             if (sbytes == -1) {
-                 perror("send error");
-                 exit(1);
-             }
-         }
     }
 }
 
 
 
 int main(int argc, char *argv[] ) {
-    
+    signal(SIGINT, sighandler);
+    signal(SIGQUIT, sighandler);
     char* IP = "127.0.0.1";
     if(argc>1){
         IP=argv[1];
