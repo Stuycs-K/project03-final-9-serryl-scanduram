@@ -17,6 +17,7 @@
 #define HISTORY_H
 #define BUFFER_SIZE 1024
 void reader(char *username, char *message);
+void writer();
 void creator();
 
 #endif
