@@ -51,5 +51,22 @@ char* creator(){
 }
 
 void directoryPrint(){
+    DIR *dir;
+    struct dirent *entry;
+    
+    dir = opendir(".");
+        if (dir == NULL) {
+            perror("Error opening directory");
+            return;
+        }
+    
+    printf("Chat history files:\n");
+    while ((entry = readdir(dir)) != NULL) {
+            if (strncmp(entry->d_name, "chat_history_", strlen("chat_history_")) == 0) {
+                printf("%s\n", entry->d_name);
+            }
+        }
+
+        closedir(dir);
     
 }
