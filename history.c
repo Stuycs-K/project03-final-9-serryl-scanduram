@@ -48,6 +48,8 @@ char* creator(){
     strcat(filename, ".txt");
     
     return filename;
-    
+}
+
+void directoryPrint(){
     
 }

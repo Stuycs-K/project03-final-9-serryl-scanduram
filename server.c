@@ -14,18 +14,13 @@ struct User user_list[MAX_USERS];
 int userCount = 0;
 
 
-void subserver_logic(int client_socket, char *username, char save){
+void subserver_logic(int client_socket, char *username){
     
     char buffer[BUFFER_SIZE];
     printf("[%s] joined the chat. Th\n", username);
     
     
     while (1) {
-        int c = getchar();
-        if (c != EOF) {
-            save = (char)c;
-        }
-        
         fd_set read_fds;
         FD_ZERO(&read_fds);
         FD_SET(STDIN_FILENO, &read_fds);
@@ -40,7 +35,6 @@ void subserver_logic(int client_socket, char *username, char save){
         //int Sbytes = write(user_list[i].socket_id, username, strlen(username));
 
         if(FD_ISSET(STDIN_FILENO, &read_fds)){
-            printf("in stdin sevrer");
             fgets(buffer, sizeof(buffer), stdin); //read from standard in
             buffer[strlen(buffer) - 1] = '\0';
             printf("[%s]: %s\n", username, buffer);
@@ -54,11 +48,9 @@ void subserver_logic(int client_socket, char *username, char save){
                     }
                 }
             }
-            printf("after stdin");
         }
         
         if (FD_ISSET(client_socket, &read_fds)) {
-            printf("[%s] is typing from client socket\n", username);
             // Receive data from client
             int Rbytes = read(client_socket, buffer, sizeof(buffer));
             if (Rbytes <= 0) {
@@ -74,19 +66,12 @@ void subserver_logic(int client_socket, char *username, char save){
                 
                 break;
             }
-            else{
+            
                 buffer[Rbytes] = '\0';
                 printf("[%s] received: %s\n", username, buffer);
                 // Broadcast the received message to all clients
-                //printf("\nusercount: %d\n", userCount);
-                printf("printing userList: \n");
-                for (int i = 0; i < userCount; i++){
-                    printf("user %d: %s\n", i, user_list[i].username);
-                }
                 
                 for (int i = 0; i < userCount; i++) {
-                    if (user_list[i].socket_id != -1){
-                        printf("Broadcasting to %s: %s\n", user_list[i].username, buffer);//does do that
                         
                         if(strcmp(user_list[i].username, username)!=0){
                             printf("current user: %s\n", user_list[i].username);
@@ -96,12 +81,10 @@ void subserver_logic(int client_socket, char *username, char save){
                             }
                         }
                     }
-                }
                 printf("[%s]: %s\n", username, buffer);
             }
-        }
         
-    }
+        }
     
     close(client_socket);
 }

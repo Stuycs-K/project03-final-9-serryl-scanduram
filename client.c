@@ -82,7 +82,7 @@ int main(int argc, char *argv[] ) {
         else{
             printf("Ok. chat will not be saved!\n");
         }
-        write(server_socket, save, strlen(save));
+        
         int c;
         while ((c = getchar()) != '\n' && c != EOF);        
         
