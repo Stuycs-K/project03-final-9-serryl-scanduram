@@ -1,5 +1,6 @@
 #include "networking.h"
 #include <fcntl.h>
+#include <time.h>
 
 #define MAX_LINE_LENGTH 1000
 
@@ -29,15 +30,24 @@ void reader(char *filename){
         fclose(r_file);
 }
 
-void creator(){
+char* creator(){
     time_t t = time(NULL);
-    struct tm tm_info = *localtime(&t) //found this code online
+    struct tm tm_info = *localtime(&t); //found this code online
     
-    char filename[200];
-    strcpy(filename, "chat_history_");
+    char *filename = malloc(200);
+    if (filename == NULL) {
+            perror("Memory allocation error");
+            exit(EXIT_FAILURE);
+        }
+    
+    strcpy(filename, "./chat_history_");
     sprintf(filename + strlen(filename), "%04d%02d%02d_%02d%02d%02d.txt",
                 tm_info.tm_year + 1900, tm_info.tm_mon + 1, tm_info.tm_mday,
                 tm_info.tm_hour, tm_info.tm_min, tm_info.tm_sec);
+    
+    strcat(filename, ".txt");
+    
+    return filename;
     
     
 }

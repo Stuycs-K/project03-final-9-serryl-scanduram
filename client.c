@@ -1,5 +1,7 @@
 #include "networking.h"
 #include "history.h"
+char* FILENAME;
+char save[2];
 
 
 void clientLogic(int server_socket, char username[50]){
@@ -22,15 +24,10 @@ void clientLogic(int server_socket, char username[50]){
         }
         
         if (FD_ISSET(server_socket, &read_fds)) {
-           /*
-            int rbytes = read(server_socket, user, sizeof(user));
-            if (rbytes <= 0) {
-                perror("recv error");
-                break;
-            }
-            printf("[%s]: ", user);
-            */
             int rbytes = read(server_socket, buffer, sizeof(buffer));
+            if (save[0]=='y'){
+                writer(FILENAME, "", buffer);
+            }
             if (rbytes <= 0) {
                 perror("recv error");
                 break;
@@ -43,6 +40,9 @@ void clientLogic(int server_socket, char username[50]){
              printf("[%s]: ", username);
              fgets(buffer, sizeof(buffer), stdin);
              buffer[strlen(buffer) - 1] = '\0';
+            if (save[0]=='y'){
+                writer(FILENAME, username, buffer);
+            }
              int sbytes = write(server_socket, buffer, strlen(buffer));
              if (sbytes == -1) {
                  perror("send error");
@@ -67,18 +67,17 @@ int main(int argc, char *argv[] ) {
     char ans[2];
     fgets(ans, sizeof(ans), stdin);
     if(strcmp(ans, "h") == 0){
-        writer();
+        printf("in progress");
     }
     else {
         int s;
         while ((s = getchar()) != '\n' && s != EOF);
-        char save[2];
         printf("Do you want to save chat history? (y/n):\n");
         fgets(save, sizeof(save), stdin);
         save[strcspn(save, "\n")] = '\0';
         if (save[0]=='y') {
             printf("Ok. chat will be saved!\n");
-            creator();
+            FILENAME = creator();
         }
         else{
             printf("Ok. chat will not be saved!\n");
@@ -98,11 +97,6 @@ int main(int argc, char *argv[] ) {
         }
         int sbytes = write(server_socket, name, strlen(name));
         if (sbytes < 0) {
-            perror("send error");
-            
-            //int sbytes = write(server_socket, name, strlen(name));
-            
-            //if (sbytes < 0) {
             perror("send error");
             close(server_socket);
             exit(1);

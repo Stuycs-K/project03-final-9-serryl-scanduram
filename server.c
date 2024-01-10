@@ -17,7 +17,7 @@ int userCount = 0;
 void subserver_logic(int client_socket, char *username, char save){
     
     char buffer[BUFFER_SIZE];
-    printf("[%s] joined the chat\n", username);
+    printf("[%s] joined the chat. Th\n", username);
     
     
     while (1) {
@@ -61,10 +61,6 @@ void subserver_logic(int client_socket, char *username, char save){
             printf("[%s] is typing from client socket\n", username);
             // Receive data from client
             int Rbytes = read(client_socket, buffer, sizeof(buffer));
-            if (save =='y'){
-                reader(username, buffer);
-            }
-
             if (Rbytes <= 0) {
                 // Client disconnecteD
                 printf("[%s] disconnected\n", username);
@@ -139,19 +135,9 @@ int main(int argc, char *argv[] ) {
         if (FD_ISSET(listen_socket, &read_fds)) {
             int client_socket = server_tcp_handshake(listen_socket);
             
-            char save[2];
-            int rbytes = read(client_socket, save, sizeof(save));
-            if (strcmp(save, "y") == 0){
-                printf("chat will be saved\n");
-                //stub for next
-            }
-            else{
-                printf("chat will not be saved\n");
-            }
-            
             struct User new_user;
             new_user.socket_id = client_socket;
-            rbytes = read(client_socket, new_user.username, sizeof(new_user.username));
+            int rbytes = read(client_socket, new_user.username, sizeof(new_user.username));
             if (rbytes > 0) {
                 new_user.username[rbytes] = '\0';
                 user_list[userCount++] = new_user;

@@ -16,9 +16,9 @@
 #ifndef HISTORY_H
 #define HISTORY_H
 #define BUFFER_SIZE 1024
-void reader(char *username, char *message);
-void writer();
-void creator();
+void reader(char *filename);
+void writer( char* filename, char *username, char *message);
+char * creator();
 
 #endif
 
