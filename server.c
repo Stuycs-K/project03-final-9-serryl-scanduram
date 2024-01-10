@@ -17,10 +17,11 @@ int userCount = 0;
 void subserver_logic(int client_socket, char *username){
     
     char buffer[BUFFER_SIZE];
-    printf("[%s] joined the chat. Th\n", username);
+    //printf("[%s] joined the chat. \n", username);
     
     
     while (1) {
+        //char message[1050];
         fd_set read_fds;
         FD_ZERO(&read_fds);
         FD_SET(STDIN_FILENO, &read_fds);
@@ -37,7 +38,10 @@ void subserver_logic(int client_socket, char *username){
         if(FD_ISSET(STDIN_FILENO, &read_fds)){
             fgets(buffer, sizeof(buffer), stdin); //read from standard in
             buffer[strlen(buffer) - 1] = '\0';
+            //strncpy(message, username, sizeof(message));
+            //strncat(message, buffer, sizeof(message) - strlen(username) - 1);
             printf("[%s]: %s\n", username, buffer);
+            //printf("[%s]", message);
             
             for (int i = 0; i < userCount; i++){
                 if(user_list[i].socket_id != -1 && user_list[i].socket_id != client_socket){
@@ -72,22 +76,21 @@ void subserver_logic(int client_socket, char *username){
                 // Broadcast the received message to all clients
                 
                 for (int i = 0; i < userCount; i++) {
-                        
                         if(strcmp(user_list[i].username, username)!=0){
-                            printf("current user: %s\n", user_list[i].username);
                             int Sbytes = write(user_list[i].socket_id, buffer, Rbytes);
                             if (Sbytes<0) {
                                 perror("Send error");
                             }
                         }
                     }
-                printf("[%s]: %s\n", username, buffer);
+                //printf("[%s]: %s\n", username, buffer);
             }
         
         }
     
     close(client_socket);
 }
+
 
 int main(int argc, char *argv[] ) {
     //semUserCount();
@@ -150,9 +153,13 @@ int main(int argc, char *argv[] ) {
                 else{
                     buffer[rbytes] = '\0';
                     printf("[%s]: %s\n", user_list[i].username, buffer);
+                    
+                    char message[BUFFER_SIZE + sizeof(user_list[i].username) + 5];
+                    snprintf(message, sizeof(message), "[%s]: %s", user_list[i].username, buffer);
+                    
                     for (int j = 0; j < userCount; j++) {
                         if (j != i) {
-                            int sbytes = write(user_list[j].socket_id, buffer, rbytes);
+                            int sbytes = write(user_list[j].socket_id, message, strlen(message));
                             if (sbytes < 0) {
                                 perror("Send error");
                             }
@@ -164,3 +171,4 @@ int main(int argc, char *argv[] ) {
     }
     close(listen_socket);
 }
+

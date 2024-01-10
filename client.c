@@ -37,7 +37,7 @@ void clientLogic(int server_socket, char username[50]){
         }
         
         if (FD_ISSET(STDIN_FILENO, &read_fds)) {
-             printf("[%s]: ", username);
+             //printf("[%s]: ", username);
              fgets(buffer, sizeof(buffer), stdin);
              buffer[strlen(buffer) - 1] = '\0';
             if (save[0]=='y'){
