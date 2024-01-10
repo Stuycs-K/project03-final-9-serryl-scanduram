@@ -95,7 +95,13 @@ int main(int argc, char *argv[] ) {
     char ans[2];
     fgets(ans, sizeof(ans), stdin);
     if(strcmp(ans, "h") == 0){
-        printf("in progress");
+        directoryPrint();
+        printf("Please enter the exact name of the history you would like to see: ");
+        char historyName[100];
+        fgets(historyName, sizeof(historyName), stdin);
+        historyName[strcspn(historyName, "\n")] = '\0';
+        reader(historyName);
+        
     }
     else {
         int s;

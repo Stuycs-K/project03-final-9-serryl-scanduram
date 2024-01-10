@@ -1,6 +1,7 @@
 #include "networking.h"
 #include <fcntl.h>
 #include <time.h>
+#include <dirent.h>
 
 #define MAX_LINE_LENGTH 1000
 
