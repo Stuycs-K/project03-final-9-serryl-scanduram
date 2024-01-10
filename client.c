@@ -1,15 +1,42 @@
 #include "networking.h"
 #include "history.h"
+#include <signal.h>
+#include <string.h>
+
 char* FILENAME;
 char save[2];
 
+static int sigint_received = 0; // Global variable to track SIGINT reception
+
+static void sighandler( int signo ){
+    if (signo == SIGINT){
+        printf("Are you sure you want to exit? (y/n)\n");
+        char input[2];
+        fgets(input, sizeof(input), stdin);
+        if (strcmp(input, "y") == 0){
+            printf("\nyou are exiting\n");//change to smth involving usr?
+            exit(0);
+        }
+        else{
+            printf("okay!\n");
+            sigint_received = 1; // Set the flag to continue normal execution
+        }
+    }
+    else if(signo == SIGQUIT){
+        printf("not sure what this does");
+    }
+}
 
 void clientLogic(int server_socket, char username[50]){
     char buffer[BUFFER_SIZE];
     char user[50];
     //prompt user input
     while (1) {
-        
+        /*
+       //if (sigint_received == 1){
+     //   }
+
+        */
         fd_set read_fds;
         FD_ZERO(&read_fds);
         FD_SET(server_socket, &read_fds);
@@ -55,7 +82,8 @@ void clientLogic(int server_socket, char username[50]){
 
 
 int main(int argc, char *argv[] ) {
-    
+    //signal(SIGINT, sighandler);
+    //signal(SIGQUIT, sighandler);
     char* IP = "127.0.0.1";
     if(argc>1){
         IP=argv[1];
