@@ -9,15 +9,15 @@ void err(int i, char*message){
 
 static void sighandler( int signo ){
     if (signo == SIGINT){
-        printf("Are you sure you want to exit? (y/n)\n");
+        printf("Are you sure you want the server to quit? Client connections will fail (y/n)\n");
         char* input[2];
         fgets(input, sizeof(input), stdin);
         if (strcmp(input, "y") == 0){
-            printf("you are exiting\n");//change to smth involving usr?
+            printf("exiting program\n");//change to smth involving usr?
             exit(0);
         }
         else{
-            printf("okay!\n");
+            printf("okay, all connections intact\n");
         }
     }
     else if(signo == SIGQUIT){

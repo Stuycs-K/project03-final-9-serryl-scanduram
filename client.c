@@ -30,7 +30,7 @@ void clientLogic(int server_socket, char username[50]){
     char user[50];
     //prompt user input
     while (1) {
-        if (sigint_received == 1){
+       //if (sigint_received == 1){
             
             fd_set read_fds;
             FD_ZERO(&read_fds);
@@ -73,15 +73,15 @@ void clientLogic(int server_socket, char username[50]){
                     exit(1);
                 }
             }
-        }
+     //   }
     }
 }
 
 
 
 int main(int argc, char *argv[] ) {
-    signal(SIGINT, sighandler);
-    signal(SIGQUIT, sighandler);
+    //signal(SIGINT, sighandler);
+    //signal(SIGQUIT, sighandler);
     char* IP = "127.0.0.1";
     if(argc>1){
         IP=argv[1];
