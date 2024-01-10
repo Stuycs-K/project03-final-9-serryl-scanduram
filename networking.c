@@ -46,7 +46,7 @@ int client_tcp_handshake(char * server_address) {
  *blocks until connection is made.
  */
 int server_tcp_handshake(int listen_socket){
-    // accept
+    // accept   
     
     int client_socket;
     struct sockaddr_storage client_address;

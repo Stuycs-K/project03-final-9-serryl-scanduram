@@ -43,3 +43,7 @@ Finished proposal doc and made a plan for splitting work.
 ###2024-01-09
     School: Margaux and Lily worked together. We were trying to figure out the really hard part, so we asked mr.K, turns out we were not supposed to use a forking server, oops! We spent the rest of the period switching it to a persistent server, and now the code works!! Our clients connect and can see each others messages. 
     Home: Margaux worked on beginning the saving of chats. She created the new history files and reconfigured makefile to include them and work properly. She also gave the client the option to sva ethe history and made a preliminary writing method for writing to a file. There are a few bugs, but ntohing that can't be fixed tomorrow.
+    
+###2024-01-10
+    School: During school, Margaux worked on creating the history functions. The function reading a file back works, along with the creator function. I used code found online to use the current date and time to differnetiate file names. I also fixed the username issue and the some clients saving, some not. 
+    Home: I created the directory print function, fixed bugs, and fixed formatting. I changed it so the client writes to the file instead of the server and removed subserver_logic as it wasn't doing anything.  

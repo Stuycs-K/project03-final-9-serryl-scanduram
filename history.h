@@ -19,6 +19,7 @@
 void reader(char *filename);
 void writer( char* filename, char *username, char *message);
 char * creator();
+void directoryPrint();
 
 #endif
 
