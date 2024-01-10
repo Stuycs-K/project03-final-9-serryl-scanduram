@@ -5,6 +5,14 @@
 #include <string.h>
 #define MAX_USERS 30
 
+struct User {
+    int socket_id;
+    char username[50];
+};
+
+struct User user_list[MAX_USERS];
+int userCount = 0;
+
 static int sigint_received = 0; // Global variable to track SIGINT reception
 
 static void sighandler( int signo ){
@@ -28,102 +36,6 @@ static void sighandler( int signo ){
 
 
 
-
-
-struct User {
-    int socket_id;
-    char username[50];
-};
-
-struct User user_list[MAX_USERS];
-int userCount = 0;
-
-/*
-
-void subserver_logic(int client_socket, char *username){
-    
-    char buffer[BUFFER_SIZE];
-    //printf("[%s] joined the chat. \n", username);
-    
-    
-    while (1) {
-        //char message[1050];
-        fd_set read_fds;
-        FD_ZERO(&read_fds);
-        FD_SET(STDIN_FILENO, &read_fds);
-        FD_SET(client_socket, &read_fds);
-        
-        int i = select(client_socket + 1, &read_fds, NULL, NULL, NULL);
-        if (i < 0) {
-            perror("select error");
-            break;
-        }
-        
-        //int Sbytes = write(user_list[i].socket_id, username, strlen(username));
-        
-        if(FD_ISSET(STDIN_FILENO, &read_fds)){
-            fgets(buffer, sizeof(buffer), stdin); //read from standard in
-            buffer[strlen(buffer) - 1] = '\0';
-            //strncpy(message, username, sizeof(message));
-            //strncat(message, buffer, sizeof(message) - strlen(username) - 1);
-            printf("[%s]: %s\n", username, buffer);
-            //printf("[%s]", message);
-            
-            for (int i = 0; i < userCount; i++){
-                if(user_list[i].socket_id != -1 && user_list[i].socket_id != client_socket){
-                    
-                    int Sbytes = write(user_list[i].socket_id, buffer, strlen(buffer));
-                    if(Sbytes <0){
-                        perror("Send error");
-                    }
-                }
-            }
-        }
-        
-        if (FD_ISSET(client_socket, &read_fds)) {
-            // Receive data from client
-            int Rbytes = read(client_socket, buffer, sizeof(buffer));
-<<<<<<< HEAD
-            if (save =='y'){
-                reader(username, buffer);
-            }
-            
-=======
->>>>>>> c16586bf7417e22a33249f73081ad4a70020c030
-            if (Rbytes <= 0) {
-                // Client disconnecteD
-                printf("[%s] disconnected\n", username);
-                
-                for (int i = 0; i < userCount; i++) {
-                    if (user_list[i].socket_id == client_socket) {
-                        user_list[i].socket_id = -1;  // Mark as disconnected
-                        break;
-                    }
-                }
-                
-                break;
-            }
-            
-                buffer[Rbytes] = '\0';
-                printf("[%s] received: %s\n", username, buffer);
-                // Broadcast the received message to all clients
-                
-                for (int i = 0; i < userCount; i++) {
-                        if(strcmp(user_list[i].username, username)!=0){
-                            int Sbytes = write(user_list[i].socket_id, buffer, Rbytes);
-                            if (Sbytes<0) {
-                                perror("Send error");
-                            }
-                        }
-                    }
-                //printf("[%s]: %s\n", username, buffer);
-            }
-        
-        }
-    
-    close(client_socket);
-}
-*/
 
 int main(int argc, char *argv[] ) {
     //signal(SIGINT, sighandler);
