@@ -1,5 +1,6 @@
 #include "networking.h"
 #include "history.h"
+<<<<<<< HEAD
 #include <signal.h>
 #include <string.h>
 
@@ -23,6 +24,10 @@ static void sighandler( int signo ){
         printf("not sure what this does");
     }
 }
+=======
+char* FILENAME;
+char save[2];
+>>>>>>> c16586bf7417e22a33249f73081ad4a70020c030
 
 
 void clientLogic(int server_socket, char username[50]){
@@ -30,6 +35,7 @@ void clientLogic(int server_socket, char username[50]){
     char user[50];
     //prompt user input
     while (1) {
+<<<<<<< HEAD
        //if (sigint_received == 1){
             
             fd_set read_fds;
@@ -74,6 +80,48 @@ void clientLogic(int server_socket, char username[50]){
                 }
             }
      //   }
+=======
+        
+        fd_set read_fds;
+        FD_ZERO(&read_fds);
+        FD_SET(server_socket, &read_fds);
+        FD_SET(STDIN_FILENO, &read_fds);
+        
+
+        int i = select(server_socket + 1, &read_fds, NULL, NULL, NULL);
+        
+        if (i < 0) {
+            perror("select error");
+            break;
+        }
+        
+        if (FD_ISSET(server_socket, &read_fds)) {
+            int rbytes = read(server_socket, buffer, sizeof(buffer));
+            if (save[0]=='y'){
+                writer(FILENAME, "", buffer);
+            }
+            if (rbytes <= 0) {
+                perror("recv error");
+                break;
+            }
+            buffer[rbytes] = '\0';
+            printf("%s\n", buffer);
+        }
+        
+        if (FD_ISSET(STDIN_FILENO, &read_fds)) {
+             printf("[%s]: ", username);
+             fgets(buffer, sizeof(buffer), stdin);
+             buffer[strlen(buffer) - 1] = '\0';
+            if (save[0]=='y'){
+                writer(FILENAME, username, buffer);
+            }
+             int sbytes = write(server_socket, buffer, strlen(buffer));
+             if (sbytes == -1) {
+                 perror("send error");
+                 exit(1);
+             }
+         }
+>>>>>>> c16586bf7417e22a33249f73081ad4a70020c030
     }
 }
 
@@ -93,23 +141,22 @@ int main(int argc, char *argv[] ) {
     char ans[2];
     fgets(ans, sizeof(ans), stdin);
     if(strcmp(ans, "h") == 0){
-        writer();
+        printf("in progress");
     }
     else {
         int s;
         while ((s = getchar()) != '\n' && s != EOF);
-        char save[2];
         printf("Do you want to save chat history? (y/n):\n");
         fgets(save, sizeof(save), stdin);
         save[strcspn(save, "\n")] = '\0';
         if (save[0]=='y') {
             printf("Ok. chat will be saved!\n");
-            creator();
+            FILENAME = creator();
         }
         else{
             printf("Ok. chat will not be saved!\n");
         }
-        write(server_socket, save, strlen(save));
+        
         int c;
         while ((c = getchar()) != '\n' && c != EOF);        
         
@@ -124,11 +171,6 @@ int main(int argc, char *argv[] ) {
         }
         int sbytes = write(server_socket, name, strlen(name));
         if (sbytes < 0) {
-            perror("send error");
-            
-            //int sbytes = write(server_socket, name, strlen(name));
-            
-            //if (sbytes < 0) {
             perror("send error");
             close(server_socket);
             exit(1);
