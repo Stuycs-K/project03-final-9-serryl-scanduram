@@ -3,7 +3,7 @@
 
 #define MAX_LINE_LENGTH 1000
 
-void writer( char *username, char *message){
+void writer( char* filename, char *username, char *message){
     FILE *log_file = fopen("./log.txt", "a");
     if (log_file == NULL) {
            perror("Error opening log file");
@@ -14,7 +14,7 @@ void writer( char *username, char *message){
     fclose(log_file);
 }
 
-void reader(){
+void reader(char *filename){
     FILE *r_file = fopen("./log.txt", "r");
     if(r_file == NULL) {
         perror("Error opening file");
@@ -30,5 +30,14 @@ void reader(){
 }
 
 void creator(){
+    time_t t = time(NULL);
+    struct tm tm_info = *localtime(&t) //found this code online
+    
+    char filename[200];
+    strcpy(filename, "chat_history_");
+    sprintf(filename + strlen(filename), "%04d%02d%02d_%02d%02d%02d.txt",
+                tm_info.tm_year + 1900, tm_info.tm_mon + 1, tm_info.tm_mday,
+                tm_info.tm_hour, tm_info.tm_min, tm_info.tm_sec);
+    
     
 }
