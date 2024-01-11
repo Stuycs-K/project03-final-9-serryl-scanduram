@@ -115,20 +115,25 @@ int main(int argc, char *argv[] ) {
     char ans[2];
     fgets(ans, sizeof(ans), stdin);
     
+    
     if(strcmp(ans, "h") == 0){
         directoryPrint();
         
         printf("Please enter the exact name of the history you would like to see: ");
         char historyName[100];
-        fgets(historyName, sizeof(historyName), stdin);
+        scanf("%99s", historyName);
         historyName[strcspn(historyName, "\n")] = '\0';
+        int c;
+        while ((c = getchar()) != '\n' && c != EOF);
         printf("Selected history file: %s\n", historyName);
         reader(historyName);
+         
+         
          
         
     }
     
-    else {
+    //else {
         int s;
         while ((s = getchar()) != '\n' && s != EOF);
         printf("Do you want to save chat history? (y/n):\n");
@@ -161,7 +166,7 @@ int main(int argc, char *argv[] ) {
             exit(1);
         }
         clientLogic(server_socket, name);
-    }
+    //}
      
     close(server_socket);
 
