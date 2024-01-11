@@ -17,9 +17,14 @@ Home: Lily worked on getting the clients to send messages to eachother through t
 
 ###2024-01-8 - School: Margaux and Lily worked together on Lily's account during class to debug. We spent the entire period debugging and trying to figure out where the code stops working. Unfortunately, we were unsuccessful with our print statements. 
 Home: Lily worked after Margaux on trying to get the clients to communicate and figured out that the issue was that the user_list didn't update for the first client when a new one connected. She is going to maybe try using semaphores to fix that and share memory?
+
 ###2024-01-09
     School: Margaux and Lily worked together. We were trying to figure out the really hard part, so we asked mr.K, turns out we were not supposed to use a forking server, oops! We spent the rest of the period switching it to a persistent server, and now the code works!! Our clients connect and can see each others messages. 
     Home: Lily fixed a bug that Margaux was working on earlier that had messed up the username input. Also worked on the formatting of the chat so that it is clear who is sending what message.
+
+###2024-01-09
+School: Started working on sighandler. Made a plan for server and client actions with SIGINT. Started to work on client sighandler.
+Home: Almost finished with client sighandler, but there is a little bug I tried to fix. Also started worker on server sighandler, but I am running into a lot of problems where the sighandler code in either client or server will disrupt the connections.
 
 
 ## Player 2 Margaux
