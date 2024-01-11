@@ -82,8 +82,8 @@ void clientLogic(int server_socket, char username[50]){
 
 
 int main(int argc, char *argv[] ) {
-    //signal(SIGINT, sighandler);
-    //signal(SIGQUIT, sighandler);
+    signal(SIGINT, sighandler);
+    signal(SIGQUIT, sighandler);
     char* IP = "127.0.0.1";
     if(argc>1){
         IP=argv[1];
