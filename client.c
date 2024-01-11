@@ -117,13 +117,13 @@ int main(int argc, char *argv[] ) {
     
     if(strcmp(ans, "h") == 0){
         directoryPrint();
-        /*
+        
         printf("Please enter the exact name of the history you would like to see: ");
         char historyName[100];
         fgets(historyName, sizeof(historyName), stdin);
         historyName[strcspn(historyName, "\n")] = '\0';
         reader(historyName);
-         */
+         
         
     }
     else {

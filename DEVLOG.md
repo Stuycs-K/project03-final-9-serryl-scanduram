@@ -51,4 +51,7 @@ Finished proposal doc and made a plan for splitting work.
     
 ###2024-01-10
     School: During school, Margaux worked on creating the history functions. The function reading a file back works, along with the creator function. I used code found online to use the current date and time to differnetiate file names. I also fixed the username issue and the some clients saving, some not. 
-    Home: I created the directory print function, fixed bugs, and fixed formatting. I changed it so the client writes to the file instead of the server and removed subserver_logic as it wasn't doing anything.  
+    Home: I created the directory print function, fixed bugs, and fixed formatting. I changed it so the client writes to the file instead of the server and removed subserver_logic as it wasn't doing anything. 
+    
+###2024-01-11
+    School: During school, I worked on fixing the directory functions. This involved actually creating the files (oops) and fixing the formatting of how the messages were saved.
