@@ -68,7 +68,7 @@ void clientLogic(int server_socket, char username[50]){
             if (FD_ISSET(server_socket, &read_fds)) {
                 int rbytes = read(server_socket, buffer, sizeof(buffer));
                 if (save[0]=='y'){
-                    writer(FILENAME, "", buffer);
+                    writer(FILENAME, buffer);
                 }
                 if (rbytes <= 0) {
                     perror("recv error");
@@ -83,7 +83,9 @@ void clientLogic(int server_socket, char username[50]){
                 fgets(buffer, sizeof(buffer), stdin);
                 buffer[strlen(buffer) - 1] = '\0';
                 if (save[0]=='y'){
-                    writer(FILENAME, username, buffer);
+                    char message[BUFFER_SIZE + 55];
+                    snprintf(message, sizeof(message), "[%s]: %s", username, buffer);
+                    writer(FILENAME, buffer);
                 }
                 int sbytes = write(server_socket, buffer, strlen(buffer));
                 if (sbytes == -1) {
@@ -91,7 +93,6 @@ void clientLogic(int server_socket, char username[50]){
                     exit(1);
                 }
             }
-        //}
     }
 }
 
@@ -116,11 +117,13 @@ int main(int argc, char *argv[] ) {
     
     if(strcmp(ans, "h") == 0){
         directoryPrint();
+        /*
         printf("Please enter the exact name of the history you would like to see: ");
         char historyName[100];
         fgets(historyName, sizeof(historyName), stdin);
         historyName[strcspn(historyName, "\n")] = '\0';
         reader(historyName);
+         */
         
     }
     else {

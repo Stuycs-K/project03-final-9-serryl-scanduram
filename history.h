@@ -17,7 +17,7 @@
 #define HISTORY_H
 #define BUFFER_SIZE 1024
 void reader(char *filename);
-void writer( char* filename, char *username, char *message);
+void writer( char* filename, char *message);
 char * creator();
 void directoryPrint();
 

@@ -5,13 +5,13 @@
 
 #define MAX_LINE_LENGTH 1000
 
-void writer( char* filename, char *username, char *message){
-    FILE *log_file = fopen("./log.txt", "a");
+void writer( char *filename, char *message){
+    FILE *log_file = fopen(filename, "a");
     if (log_file == NULL) {
            perror("Error opening log file");
            return;
        }
-    fprintf(log_file, "[%s]: %s\n", username, message);
+    fprintf(log_file, "%s\n", message);
 
     fclose(log_file);
 }
@@ -46,7 +46,14 @@ char* creator(){
                 tm_info.tm_year + 1900, tm_info.tm_mon + 1, tm_info.tm_mday,
                 tm_info.tm_hour, tm_info.tm_min, tm_info.tm_sec);
     
-    strcat(filename, ".txt");
+    FILE *log_file = fopen(filename, "w");
+        if (log_file == NULL) {
+            perror("Error creating log file");
+            free(filename); // Free memory allocated for filename
+            exit(EXIT_FAILURE);
+        }
+
+        fclose(log_file);
     
     return filename;
 }
