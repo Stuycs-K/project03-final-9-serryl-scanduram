@@ -35,7 +35,7 @@ static void sighandler( int signo ){
 
 void clientLogic(int server_socket, char username[50]){
     char buffer[BUFFER_SIZE];
-    char user[50];
+    //char user[50];
 
     //prompt user input
     while (1) {
@@ -52,7 +52,7 @@ void clientLogic(int server_socket, char username[50]){
                 perror("select error");
                 break;
             }
-        
+        /*
         if (reconnect_requested) {
             // Reconnect to the server
             close(server_socket);
@@ -63,6 +63,7 @@ void clientLogic(int server_socket, char username[50]){
             }
             reconnect_requested = 0; // Reset the reconnection flag
         }
+         */
         
        // if (sigint_received == 1) {
             if (FD_ISSET(server_socket, &read_fds)) {
@@ -79,7 +80,6 @@ void clientLogic(int server_socket, char username[50]){
             }
             
             if (FD_ISSET(STDIN_FILENO, &read_fds)) {
-                //printf("[%s]: ", username);
                 fgets(buffer, sizeof(buffer), stdin);
                 buffer[strlen(buffer) - 1] = '\0';
                 if (save[0]=='y'){
@@ -93,8 +93,8 @@ void clientLogic(int server_socket, char username[50]){
                     exit(1);
                 }
             }
+        }
     }
-}
 
 
 
@@ -122,10 +122,12 @@ int main(int argc, char *argv[] ) {
         char historyName[100];
         fgets(historyName, sizeof(historyName), stdin);
         historyName[strcspn(historyName, "\n")] = '\0';
+        printf("Selected history file: %s\n", historyName);
         reader(historyName);
          
         
     }
+    
     else {
         int s;
         while ((s = getchar()) != '\n' && s != EOF);
@@ -160,6 +162,7 @@ int main(int argc, char *argv[] ) {
         }
         clientLogic(server_socket, name);
     }
+     
     close(server_socket);
 
 }
