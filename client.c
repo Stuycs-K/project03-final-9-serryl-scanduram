@@ -111,62 +111,69 @@ int main(int argc, char *argv[] ) {
     int server_socket = client_tcp_handshake(IP);
     printf("client connected.\n");
     
-    printf("Please enter 'c' if you would like to enter a chat and 'h' if you would like to see previous chat histories.\n");
-    char ans[2];
-    fgets(ans, sizeof(ans), stdin);
-    
-    
-    if(strcmp(ans, "h") == 0){
-        directoryPrint();
+    while(1){
+        printf("Please enter 'c' if you would like to enter a chat or 'h' if you would like to see previous chat histories.\n");
+        char ans[2];
+        fgets(ans, sizeof(ans), stdin);
         
-        printf("Please enter the exact name of the history you would like to see: ");
-        char historyName[100];
-        scanf("%99s", historyName);
-        historyName[strcspn(historyName, "\n")] = '\0';
-        int c;
-        while ((c = getchar()) != '\n' && c != EOF);
-        printf("Selected history file: %s\n", historyName);
-        reader(historyName);
-         
-         
-         
         
-    }
-    
-    //else {
-        int s;
-        while ((s = getchar()) != '\n' && s != EOF);
-        printf("Do you want to save chat history? (y/n):\n");
-        fgets(save, sizeof(save), stdin);
-        save[strcspn(save, "\n")] = '\0';
-        if (save[0]=='y') {
-            printf("Ok. chat will be saved!\n");
-            FILENAME = creator();
-        }
-        else{
-            printf("Ok. chat will not be saved!\n");
-        }
-        
-        int c;
-        while ((c = getchar()) != '\n' && c != EOF);
-        
-        char name[100];
-        printf("Enter your username: ");
-        fgets(name, sizeof(name), stdin);
-        for (int i = 0; i < strlen(name); i++){
-            if(name[i]== '\n'|| name[i]== '\r'){
-                name[i] = 0;
-                break;
+        if(strcmp(ans, "h") == 0){
+            directoryPrint();
+            
+            printf("Please enter the exact name of the history you would like to see: ");
+            char historyName[100];
+            scanf("%99s", historyName);
+            historyName[strcspn(historyName, "\n")] = '\0';
+            int c;
+            while ((c = getchar()) != '\n' && c != EOF);
+            printf("Selected history file: %s\n", historyName);
+            reader(historyName);
+            printf("Do you want to continue? (y/n): ");
+            char continueChoice[2];
+            fgets(continueChoice, sizeof(continueChoice), stdin);
+            if (strcmp(continueChoice, "n") == 0) {
+                break; // Exit the loop if 'n' is entered
             }
+            
+            
+            
         }
-        int sbytes = write(server_socket, name, strlen(name));
-        if (sbytes < 0) {
-            perror("send error");
-            close(server_socket);
-            exit(1);
+        
+        else {
+            int s;
+            while ((s = getchar()) != '\n' && s != EOF);
+            printf("Do you want to save chat history? (y/n):\n");
+            fgets(save, sizeof(save), stdin);
+            save[strcspn(save, "\n")] = '\0';
+            if (save[0]=='y') {
+                printf("Ok. chat will be saved!\n");
+                FILENAME = creator();
+            }
+            else{
+                printf("Ok. chat will not be saved!\n");
+            }
+            
+            int c;
+            while ((c = getchar()) != '\n' && c != EOF);
+            
+            char name[100];
+            printf("Enter your username: ");
+            fgets(name, sizeof(name), stdin);
+            for (int i = 0; i < strlen(name); i++){
+                if(name[i]== '\n'|| name[i]== '\r'){
+                    name[i] = 0;
+                    break;
+                }
+            }
+            int sbytes = write(server_socket, name, strlen(name));
+            if (sbytes < 0) {
+                perror("send error");
+                close(server_socket);
+                exit(1);
+            }
+            clientLogic(server_socket, name);
         }
-        clientLogic(server_socket, name);
-    //}
+    }
      
     close(server_socket);
 

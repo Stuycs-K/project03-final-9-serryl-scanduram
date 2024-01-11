@@ -17,7 +17,6 @@ void writer( char *filename, char *message){
 }
 
 void reader(char *filename){
-    //strcat("./", filename);
     FILE *r_file = fopen(filename, "r");
     if(r_file == NULL) {
         perror("Error opening file");
