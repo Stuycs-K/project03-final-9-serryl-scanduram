@@ -44,13 +44,8 @@ int main(int argc, char *argv[] ) {
     //semUserCount();
     int listen_socket = server_setup();
     printf("server open, waiting for client\n");
-    
-    int shm_fd = shm_open(SHARED_MEM_NAME, O_CREAT | O_RDWR, 0666);
-    ftruncate(shm_fd, MAX_USERS * sizeof(struct User));
-    user_list = (struct User *)mmap(NULL, MAX_USERS * sizeof(struct User), PROT_READ | PROT_WRITE, MAP_SHARED, shm_fd, 0);
-    
+
     while(1){
-<<<<<<< HEAD
        // if (sigint_received == 1){
             fd_set read_fds;
             FD_ZERO(&read_fds);
@@ -83,25 +78,6 @@ int main(int argc, char *argv[] ) {
                 perror("Username receive error");
                 close(client_socket);
             }
-=======
-        int client_socket = server_tcp_handshake(listen_socket);
-
-        struct User new_user;
-        new_user.socket_id = client_socket;
-        int rbytes = read(client_socket, new_user.username, sizeof(new_user.username));
-        
-        if (rbytes > 0) {
-            new_user.username[rbytes] = '\0';
-            memcpy(&user_list[userCount++], &new_user, sizeof(struct User));
-            //sem_wait(userCount_sem); // Acquire semaphore before modifying userCount
-            //user_list[userCount++] = new_user;
-            //sem_post(userCount_sem); // Release semaphore after modifying userCount
-        }
-        else {
-            perror("Username receive error");
-            close(client_socket);
-            continue;
->>>>>>> f5717c6 (debugged client to client communication)
         }
         
         for(int i =0; i<userCount; i++){
@@ -139,12 +115,4 @@ int main(int argc, char *argv[] ) {
             
     }
     close(listen_socket);
-<<<<<<< HEAD
-=======
-    munmap(user_list, MAX_USERS * sizeof(struct User));
-    shm_unlink(SHARED_MEM_NAME);
-    //sem_close(userCount_sem);
-    //em_unlink("/userCount_sem"); // Cleanup semaphore
->>>>>>> f5717c6 (debugged client to client communication)
 }
-

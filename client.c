@@ -7,53 +7,39 @@ char* FILENAME;
 char save[2];
 char* IP;
 
-
-
-static int sigint_received = 0;
-static int reconnect_requested = 0; // N
+int sigint_received = 0;
 
 static void sighandler( int signo ){
     if (signo == SIGINT){
-        printf("Are you sure you want to exit? (y/n)\n");
-        char input[2];
-        fgets(input, sizeof(input), stdin);
-        if (strcmp(input, "y") == 0){
-            printf("you are exiting\n");//change to smth involving usr?
+        //printf("Are you sure you want to exit? (y/n)\n");
+        //char input[2];
+        //fgets(input, sizeof(input), stdin);
+        //if (strcmp(input, "y") == 0){
+            printf("you are exiting\n");
             exit(0);
-        }
+        //}
+        /*
         else{
             printf("Resuming...\n");
             sigint_received = 1; // Set the flag to continue normal execution
-            reconnect_requested = 1; // Set the flag to request reconnection
         }
+         */
     }
-    else if(signo == SIGQUIT){
-        printf("not sure what this does");
-    }
-   // sigint_received = 0;
 }
 
 void clientLogic(int server_socket, char username[50]){
     char buffer[BUFFER_SIZE];
     //char user[50];
-
+    
     //prompt user input
     while (1) {
         //if (sigint_received == 1) {
-            fd_set read_fds;
-            FD_ZERO(&read_fds);
-            FD_SET(server_socket, &read_fds);
-            FD_SET(STDIN_FILENO, &read_fds);
-            
-            
-            int i = select(server_socket + 1, &read_fds, NULL, NULL, NULL);
-            
-            if (i < 0) {
-                perror("select error");
-                break;
-            }
-        /*
-        if (reconnect_requested) {
+        fd_set read_fds;
+        FD_ZERO(&read_fds);
+        FD_SET(server_socket, &read_fds);
+        FD_SET(STDIN_FILENO, &read_fds);
+        
+        if (sigint_received) {
             // Reconnect to the server
             close(server_socket);
             server_socket = client_tcp_handshake(IP);
@@ -61,40 +47,46 @@ void clientLogic(int server_socket, char username[50]){
                 perror("Reconnection error");
                 exit(1);
             }
-            reconnect_requested = 0; // Reset the reconnection flag
+            sigint_received = 0; // Reset the reconnection flag
         }
-         */
         
-       // if (sigint_received == 1) {
-            if (FD_ISSET(server_socket, &read_fds)) {
-                int rbytes = read(server_socket, buffer, sizeof(buffer));
-                if (save[0]=='y'){
-                    writer(FILENAME, buffer);
-                }
-                if (rbytes <= 0) {
-                    perror("recv error");
-                    break;
-                }
-                buffer[rbytes] = '\0';
-                printf("%s\n", buffer);
+        int i = select(server_socket + 1, &read_fds, NULL, NULL, NULL);
+        
+        if (i < 0) {
+            perror("select error");
+            break;
+        }
+        
+        
+        if (FD_ISSET(server_socket, &read_fds)) {
+            int rbytes = read(server_socket, buffer, sizeof(buffer));
+            if (save[0]=='y'){
+                writer(FILENAME, buffer);
             }
-            
-            if (FD_ISSET(STDIN_FILENO, &read_fds)) {
-                fgets(buffer, sizeof(buffer), stdin);
-                buffer[strlen(buffer) - 1] = '\0';
-                if (save[0]=='y'){
-                    char message[BUFFER_SIZE + 55];
-                    snprintf(message, sizeof(message), "[%s]: %s", username, buffer);
-                    writer(FILENAME, buffer);
-                }
-                int sbytes = write(server_socket, buffer, strlen(buffer));
-                if (sbytes == -1) {
-                    perror("send error");
-                    exit(1);
-                }
+            if (rbytes <= 0) {
+                perror("recv error");
+                break;
+            }
+            buffer[rbytes] = '\0';
+            printf("%s\n", buffer);
+        }
+        
+        if (FD_ISSET(STDIN_FILENO, &read_fds)) {
+            fgets(buffer, sizeof(buffer), stdin);
+            buffer[strlen(buffer) - 1] = '\0';
+            if (save[0]=='y'){
+                char message[BUFFER_SIZE + 55];
+                snprintf(message, sizeof(message), "[%s]: %s", username, buffer);
+                writer(FILENAME, buffer);
+            }
+            int sbytes = write(server_socket, buffer, strlen(buffer));
+            if (sbytes == -1) {
+                perror("send error");
+                exit(1);
             }
         }
     }
+}
 
 
 
