@@ -25,6 +25,7 @@ static void sighandler( int signo ){
             printf("Resuming...\n");
             sigint_received = 1; // Set the flag to continue normal execution
             reconnect_requested = 1; // Set the flag to request reconnection
+           // int i = restart_syscall(2);
         }
     }
     else if(signo == SIGQUIT){
