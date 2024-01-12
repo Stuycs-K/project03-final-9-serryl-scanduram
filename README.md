@@ -7,9 +7,15 @@ Lily Serry and Margaux Scandura
        
 ### Project Description:
 
-Explain what is this project.
+This project is a chat room that will allow for two or more separate users on two or more separate computers to communicate through their terminals.
   
 ### Instructions:
 
 How does the user install/compile/run the program.
 How does the user interact with this program?
+
+To compile, enter make compile into your terminal
+To create a server to run, type ./server into your terminal. 
+To connect to a server, type ./client into your terminal. If the server is already running on YOUR computer, just enter ./client. If the server is on a different computer, enter .client SERVERIPADDRESS.
+Then you will be prompted with questions and connected to the chat.
+To exit the chat, press ^c. If the server is exited, all of the clients will be disconnected.

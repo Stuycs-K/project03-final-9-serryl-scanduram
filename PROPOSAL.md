@@ -20,12 +20,10 @@ Lily Serry and Margaux Scandura
     
     The file operations will be used to log/save the chat history. This involves using read and write. 
     
-    The signals will be used to shut the program down gracefully. 
+    The signals will be used to shut the program down. 
+        
     
-    Semaphores/Shared Memory can be used to control access to a user list. The user list would help us log which users are connected to the chat room. We could also use it to implement private messaging, though we're not sure if we'll have time for that. 
-    
-    
-    Lily will be in charge of signals and using the semaphores to create the user list. Margaux will focus on the file operations for logging the history, along with the sockets and networking that will allow for connection back and forth. Lily will also participate in the networking part. 
+    Lily will be in charge of signals and creating the user list. Margaux will focus on the file operations for logging the history. Margaux will start on creating a basic server, then Lily and Margaux will work together to enable the clients to talk to each other through the server.
      
     
 # Intended pacing:
