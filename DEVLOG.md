@@ -55,3 +55,4 @@ Finished proposal doc and made a plan for splitting work.
     
 ###2024-01-11
     School: During school, I worked on fixing the directory functions. This involved actually creating the files (oops) and fixing the formatting of how the messages were saved.
+    Home: At home, I completely fixed reader, so that works. I also edited the names of the files to make them more clear to the reader, fixed the history reading loop in the client so that it reads it out to you, and gave the user the option to exit or continue after. 

@@ -17,7 +17,7 @@ void writer( char *filename, char *message){
 }
 
 void reader(char *filename){
-    FILE *r_file = fopen("./log.txt", "r");
+    FILE *r_file = fopen(filename, "r");
     if(r_file == NULL) {
         perror("Error opening file");
         exit(EXIT_FAILURE);
@@ -67,13 +67,17 @@ void directoryPrint(){
             perror("Error opening directory");
             return;
         }
-    
+    int chatCount = 0;
     printf("Chat history files:\n");
     while ((entry = readdir(dir)) != NULL) {
             if (strncmp(entry->d_name, "chat_history_", strlen("chat_history_")) == 0) {
                 printf("%s\n", entry->d_name);
+                chatCount++;
             }
         }
+    if(chatCount==0){
+        printf("There have been no saved chats.\n");
+    }
 
         closedir(dir);
     
