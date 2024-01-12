@@ -22,10 +22,16 @@ Home: Lily worked after Margaux on trying to get the clients to communicate and 
     School: Margaux and Lily worked together. We were trying to figure out the really hard part, so we asked mr.K, turns out we were not supposed to use a forking server, oops! We spent the rest of the period switching it to a persistent server, and now the code works!! Our clients connect and can see each others messages. 
     Home: Lily fixed a bug that Margaux was working on earlier that had messed up the username input. Also worked on the formatting of the chat so that it is clear who is sending what message.
 
-###2024-01-09
+###2024-01-10
 School: Started working on sighandler. Made a plan for server and client actions with SIGINT. Started to work on client sighandler.
 Home: Almost finished with client sighandler, but there is a little bug I tried to fix. Also started worker on server sighandler, but I am running into a lot of problems where the sighandler code in either client or server will disrupt the connections.
 
+###2024-01-11
+School: I had a merge error that really messed up the code and made a mistake so I spent this time trying to rethink through some of the signaling.
+Home: Client sighandler is done. I am also almost done with server sighandler. I want to test on other computers. 
+
+###2024-01-12
+School: Spent most of the time editing the readme and proposal files because our process changed a lot and we haven't updated those at all.
 
 ## Player 2 Margaux
 
