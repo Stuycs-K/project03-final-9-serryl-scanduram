@@ -11,6 +11,7 @@ void writer( char *filename, char *message){
            perror("Error opening log file");
            return;
        }
+    printf("message being printed to file: %s\n", message);
     fprintf(log_file, "%s\n", message);
 
     fclose(log_file);
@@ -27,7 +28,6 @@ void reader(char *filename){
             // Print each line
             printf("%s", line);
         }
-
         fclose(r_file);
 }
 
