@@ -11,34 +11,36 @@ int sigint_received = 0;
 
 static void sighandler( int signo ){
     if (signo == SIGINT){
-        //printf("Are you sure you want to exit? (y/n)\n");
-        //char input[2];
-        //fgets(input, sizeof(input), stdin);
-        //if (strcmp(input, "y") == 0){
+        printf("Are you sure you want to exit? (y/n)\n");
+        char input[2];
+        fgets(input, sizeof(input), stdin);
+        if (strcmp(input, "y") == 0){
             printf("you are exiting\n");
             exit(0);
-        //}
-        /*
+        }
+        
         else{
             printf("Resuming...\n");
             sigint_received = 1; // Set the flag to continue normal execution
         }
-         */
     }
 }
 
 void clientLogic(int server_socket, char username[50]){
     char buffer[BUFFER_SIZE];
-    //char user[50];
     
     //prompt user input
     while (1) {
-        //if (sigint_received == 1) {
+        if(sigint_received ==1){
+            printf("Exiting!\n");
+            break;
+        }
         fd_set read_fds;
         FD_ZERO(&read_fds);
         FD_SET(server_socket, &read_fds);
         FD_SET(STDIN_FILENO, &read_fds);
         
+        /*
         if (sigint_received) {
             // Reconnect to the server
             close(server_socket);
@@ -49,6 +51,7 @@ void clientLogic(int server_socket, char username[50]){
             }
             sigint_received = 0; // Reset the reconnection flag
         }
+         */
         
         int i = select(server_socket + 1, &read_fds, NULL, NULL, NULL);
         
@@ -104,9 +107,22 @@ int main(int argc, char *argv[] ) {
     }
     
     int server_socket = client_tcp_handshake(IP);
-    printf("client connected.\n");
+    printf("You have connected to a chat server! Please press ctrl C at any time to exit.\n");
     
     while(1){
+        if (sigint_received == 1) {
+            printf("Are you sure you want to exit? (y/n)\n");
+            char input[2];
+            fgets(input, sizeof(input), stdin);
+            if (strcmp(input, "y") == 0) {
+                printf("you are exiting\n");
+                exit(0);
+            } else {
+                printf("Resuming...\n");
+                sigint_received = 0; // Reset the flag
+            }
+        }
+        
         printf("Please enter 'c' if you would like to enter a chat or 'h' if you would like to see previous chat histories.\n");
         char ans[2];
         fgets(ans, sizeof(ans), stdin);
