@@ -67,7 +67,6 @@ void clientLogic(int server_socket, char username[50]){
                 if (save[0]=='y'){
                     char message[BUFFER_SIZE + 55];
                     snprintf(message, sizeof(message), "[%s]: %s", username, buffer);
-                    printf("Tester message: %s\n", message);
                     writer(FILENAME, message);
                 }
                 int sbytes = write(server_socket, buffer, strlen(buffer));
