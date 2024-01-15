@@ -64,5 +64,5 @@ Finished proposal doc and made a plan for splitting work.
     Home: At home, I completely fixed reader, so that works. I also edited the names of the files to make them more clear to the reader, fixed the history reading loop in the client so that it reads it out to you, and gave the user the option to exit or continue after. 
     
 ###2024-01-12
-School: I spent a lot of time debugging the sending of the messages in the history files, including making sure it sends them formatted properly. I also tested over multiple computers and accounts to make sure the code works--it does!
-Home: 
+School: I spent a lot of time debugging the sending of the messages in the history files, including making sure it sends them formatted properly. The history just doesn't show the name of the chats from the person who's saving it. I also tested over multiple computers and accounts to make sure the code works--it does!
+Home: I worked on getting the quitting code to work more elegantly, so now you can resume or quiqt. I also fixed the history code so that it shows all of the usernames!

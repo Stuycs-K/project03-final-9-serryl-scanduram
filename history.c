@@ -11,9 +11,7 @@ void writer( char *filename, char *message){
            perror("Error opening log file");
            return;
        }
-    printf("message being printed to file: %s\n", message);
     fprintf(log_file, "%s\n", message);
-
     fclose(log_file);
 }
 
@@ -58,14 +56,14 @@ char* creator(){
     return filename;
 }
 
-void directoryPrint(){
+int directoryPrint(){
     DIR *dir;
     struct dirent *entry;
     
     dir = opendir(".");
         if (dir == NULL) {
             perror("Error opening directory");
-            return;
+            return 0;
         }
     int chatCount = 0;
     printf("Chat history files:\n");
@@ -77,8 +75,8 @@ void directoryPrint(){
         }
     if(chatCount==0){
         printf("There have been no saved chats.\n");
+        
     }
-
-        closedir(dir);
-    
+    closedir(dir);
+    return chatCount;
 }

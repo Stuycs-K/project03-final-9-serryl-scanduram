@@ -39,20 +39,6 @@ void clientLogic(int server_socket, char username[50]){
         FD_ZERO(&read_fds);
         FD_SET(server_socket, &read_fds);
         FD_SET(STDIN_FILENO, &read_fds);
-        
-        /*
-        if (sigint_received) {
-            // Reconnect to the server
-            close(server_socket);
-            server_socket = client_tcp_handshake(IP);
-            if (server_socket == -1) {
-                perror("Reconnection error");
-                exit(1);
-            }
-            sigint_received = 0; // Reset the reconnection flag
-        }
-         */
-        
         int i = select(server_socket + 1, &read_fds, NULL, NULL, NULL);
         
         if (i < 0) {
@@ -107,7 +93,7 @@ int main(int argc, char *argv[] ) {
     }
     
     int server_socket = client_tcp_handshake(IP);
-    printf("You have connected to a chat server! Please press ctrl C at any time to exit.\n");
+    printf("You have connected to a chat server! Please press Ctrl c if you would like to quit.\n\n");
     
     while(1){
         if (sigint_received == 1) {
@@ -122,32 +108,30 @@ int main(int argc, char *argv[] ) {
                 sigint_received = 0; // Reset the flag
             }
         }
-        
         printf("Please enter 'c' if you would like to enter a chat or 'h' if you would like to see previous chat histories.\n");
         char ans[2];
         fgets(ans, sizeof(ans), stdin);
         
         
         if(strcmp(ans, "h") == 0){
-            directoryPrint();
-            
-            printf("Please enter the exact name of the history you would like to see: ");
-            char historyName[100];
-            scanf("%99s", historyName);
-            historyName[strcspn(historyName, "\n")] = '\0';
-            int c;
-            while ((c = getchar()) != '\n' && c != EOF);
-            printf("Selected history file: %s\n", historyName);
-            reader(historyName);
-            printf("Do you want to continue? (y/n): ");
-            char continueChoice[2];
-            fgets(continueChoice, sizeof(continueChoice), stdin);
-            if (strcmp(continueChoice, "n") == 0) {
-                break; // Exit the loop if 'n' is entered
+            int chatCount = directoryPrint();
+            if(chatCount!=0){
+                
+                printf("Please enter the exact name of the history you would like to see: ");
+                char historyName[100];
+                scanf("%99s", historyName);
+                historyName[strcspn(historyName, "\n")] = '\0';
+                int c;
+                while ((c = getchar()) != '\n' && c != EOF);
+                printf("Selected history file: %s\n", historyName);
+                reader(historyName);
+                printf("Do you want to continue? (y/n): ");
+                char continueChoice[2];
+                fgets(continueChoice, sizeof(continueChoice), stdin);
+                if (strcmp(continueChoice, "n") == 0) {
+                    break; // Exit the loop if 'n' is entered
+                }
             }
-            
-            
-            
         }
         
         else {
