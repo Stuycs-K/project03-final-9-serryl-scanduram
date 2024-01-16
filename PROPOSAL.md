@@ -14,20 +14,19 @@ Lily Serry and Margaux Scandura
 
 # Technical Details:
 
-    This project utilizes sockets and networking, file operations, signals, and shared memory and semaphores. 
+    This project utilizes sockets, networking, file operations, and signals. 
     
     The sockets and networking will be implemented for communication between a client and sevrer, and will help the chatroom establish connections and send and receive messages. Socket programming could also be used for private messaging, but that might not be implemented. 
     
     The file operations will be used to log/save the chat history. This involves using read and write. 
     
     The signals will be used to shut the program down. 
-        
     
     Lily will be in charge of signals and creating the user list. Margaux will focus on the file operations for logging the history. Margaux will start on creating a basic server, then Lily and Margaux will work together to enable the clients to talk to each other through the server.
      
     
 # Intended pacing:
-    From January 4th-5th (in class and at home), we will start with picking and choosing from all of our other labs and implementing the proper parts. This involves the shared memory lab, the socket lab, the csv lab, and the signal lab. Margaux will also create a simple client and server. The server should be a forking server. We can also make sure that the client can put in input. 
+    From January 4th-5th (in class and at home), we will start with picking and choosing from all of our other labs and implementing the proper parts. This involves the shared memory lab, the socket lab, the csv lab, and the signal lab. Margaux will also create a simple client and persistant server. We can also make sure that the client can put in input. 
     
     From January 8th-10th, Margaux will begin creating the file operations and figuring out how to save the chat memory. Lily will work on using signals to create a graceful exit from the chat room. 
     
