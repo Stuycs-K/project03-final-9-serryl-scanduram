@@ -32,6 +32,7 @@ Home: Client sighandler is done. I am also almost done with server sighandler. I
 
 ###2024-01-12
 School: Spent most of the time editing the readme and proposal files because our process changed a lot and we haven't updated those at all.
+Home: Worked on trying to enable clients to reconnect to server. Also finalized the proposal, readme and devlog. We finished!
 
 ## Player 2 Margaux
 
